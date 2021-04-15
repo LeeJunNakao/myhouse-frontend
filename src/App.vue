@@ -4,27 +4,38 @@
 
 <script lang="ts">
 import { watch, computed } from 'vue';
-import { Data } from '@/protocols/composition';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { Data } from '@/protocols/composition';
 
 export default {
   name: 'Home',
   setup(): Data {
     const store = useStore();
+    const router = useRouter();
     const isAuthenticated = computed(
       () => store.getters['auth/isAuthenticated'],
     );
 
+    console.log(process.env.VUE_APP_AUTH_URL);
+
+    router.beforeEach((to, from) => {
+      if (!isAuthenticated.value && from.path !== '/login' && to.path !== '/login' && to.path !== '/register') {
+        router.push({ name: 'Login' });
+      }
+    });
+
     watch(
       isAuthenticated,
       (oldValue, newValue) => {
-        console.log({ oldValue, newValue });
+        if (!newValue) router.push({ name: 'Login' });
       },
       { immediate: true },
     );
 
     return { isAuthenticated };
   },
+
 };
 </script>
 

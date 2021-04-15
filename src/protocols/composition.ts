@@ -1,6 +1,6 @@
 import { Slots } from 'vue';
 
-export interface Data {
+export type Data = {
     [key: string]: unknown
 }
 

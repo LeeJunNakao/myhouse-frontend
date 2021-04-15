@@ -6,7 +6,7 @@
       </div>
       <slot></slot>
       <div class="box__button-wrapper">
-        <Button :text="buttonText" :handleClick="() => {}" />
+        <Button :text="buttonText" :handleClick="handleSubmit" />
       </div>
       <div class="box__footer">
         <a :href="footerPath">{{ footerText }}</a>
@@ -32,6 +32,10 @@ export default {
       type: String,
     },
     footerText: {
+      required: true,
+      type: String,
+    },
+    handleSubmit: {
       required: true,
       type: String,
     },
