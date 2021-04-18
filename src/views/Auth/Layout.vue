@@ -37,7 +37,7 @@ export default {
     },
     handleSubmit: {
       required: true,
-      type: String,
+      type: Function,
     },
   },
   components: {

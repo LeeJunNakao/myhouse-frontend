@@ -1,23 +1,47 @@
 <template>
-  <router-view />
+  <div class="loading-wrapper" v-if="isLoading">
+    <Loading/>
+  </div>
+  <router-view v-else />
 </template>
 
 <script lang="ts">
-import { watch, computed } from 'vue';
+import {
+  watch, computed, ref,
+} from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import AuthStore from '@/functions/auth';
+import UserStore from '@/functions/user';
 import { Data } from '@/protocols/composition';
+import Loading from '@/components/Loading/Loading.vue';
+import * as authService from '@/services/auth';
 
 export default {
   name: 'Home',
   setup(): Data {
     const store = useStore();
     const router = useRouter();
-    const isAuthenticated = computed(
-      () => store.getters['auth/isAuthenticated'],
-    );
+    const auth = new AuthStore(store);
+    const userStore = new UserStore(store);
+    const isAuthenticated = computed(() => auth.getIsAuthenticated());
+    const accessToken = computed(() => auth.getToken());
+    const isLoading = ref(true);
 
-    console.log(process.env.VUE_APP_AUTH_URL);
+    const validateToken = async (token: string | null): Promise<void> => {
+      isLoading.value = true;
+      try {
+        if (token) {
+          const userData = await authService.validateToken({ token });
+          auth.setToken(token);
+          auth.authenticate();
+          userStore.setUserData(userData);
+        }
+      } catch {
+        auth.logout();
+      }
+      isLoading.value = false;
+    };
 
     router.beforeEach((to, from) => {
       if (!isAuthenticated.value && from.path !== '/login' && to.path !== '/login' && to.path !== '/register') {
@@ -27,15 +51,20 @@ export default {
 
     watch(
       isAuthenticated,
-      (oldValue, newValue) => {
+      (newValue) => {
         if (!newValue) router.push({ name: 'Login' });
+        else router.push({ name: 'Home' });
       },
       { immediate: true },
     );
 
-    return { isAuthenticated };
-  },
+    watch(accessToken, validateToken, { immediate: true });
 
+    return { isAuthenticated, isLoading };
+  },
+  components: {
+    Loading,
+  },
 };
 </script>
 
@@ -163,5 +192,11 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+</style>
+
+<style scoped>
+.loading-wrapper {
+  height: 100vh;
 }
 </style>

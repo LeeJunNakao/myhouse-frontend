@@ -1,7 +1,7 @@
 <template>
   <div name="input" class="input-wrapper">
     <label>{{ label }}</label>
-    <input :value="value" @input="setValue($event.target.value)" />
+    <input :value="value" @input="setValue($event.target.value)" :type="type || 'text'" />
   </div>
 </template>
 
@@ -18,6 +18,7 @@ export default {
       required: true,
       type: Function,
     },
+    type: String,
   },
 };
 </script>

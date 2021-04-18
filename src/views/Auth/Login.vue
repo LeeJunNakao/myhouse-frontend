@@ -7,6 +7,7 @@
     />
     <Input
       label="Password"
+      type="password"
       :value="password"
       :setValue="(v) => setAttribute('password', v)"
     />
@@ -16,10 +17,10 @@
 <script lang="ts">
 import { ref } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
-import Input from '@/components/Inputs';
 import { Attribute } from '@/protocols/composition';
+import Auth from '@/functions/auth';
 import * as authService from '@/services/auth';
+import Input from '@/components/Inputs';
 import Layout from './Layout.vue';
 
 export default {
@@ -30,7 +31,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    const router = useRouter();
+    const auth = new Auth(store);
     const email = ref('');
     const password = ref('');
     const attributes: { [index: string]: Attribute } = { email, password };
@@ -42,9 +43,8 @@ export default {
     const login = async (): Promise<void> => {
       try {
         const { token } = await authService.login({ email: email.value, password: password.value });
-        localStorage.setItem('token', token);
-        store.dispatch('auth/setAuthentication', true);
-        router.push({ name: 'Home' });
+        auth.setToken(token);
+        auth.authenticate();
       } catch (error) {
         console.log(error);
       }

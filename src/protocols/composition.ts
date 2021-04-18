@@ -13,3 +13,8 @@ export interface SetupContext {
 export interface Attribute {
     value: any,
 }
+
+export interface Store {
+    dispatch(action: string, payload?: any): void,
+    getters: any,
+}
