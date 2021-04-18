@@ -1,4 +1,4 @@
-import StorageManager from '../Store';
+import StorageManager from '../StorageManager';
 
 class AuthStore extends StorageManager {
   setToken(token: string | null): void {

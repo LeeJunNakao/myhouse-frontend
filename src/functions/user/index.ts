@@ -1,5 +1,5 @@
 import { StateType as UserState } from '@/store/user/protocols';
-import StorageManager from '../Store';
+import StorageManager from '../StorageManager';
 
 class UserStore extends StorageManager {
   setUserData(userData: UserState): void {
