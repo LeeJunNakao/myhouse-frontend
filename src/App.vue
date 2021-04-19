@@ -10,7 +10,7 @@ import {
   watch, computed, ref,
 } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import AuthStore from '@/functions/auth';
 import UserStore from '@/functions/user';
 import { Data } from '@/protocols/composition';
@@ -22,6 +22,7 @@ export default {
   setup(): Data {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
     const auth = new AuthStore(store);
     const userStore = new UserStore(store);
     const isAuthenticated = computed(() => auth.getIsAuthenticated());
@@ -44,7 +45,7 @@ export default {
     };
 
     router.beforeEach((to, from) => {
-      if (!isAuthenticated.value && from.path !== '/login' && to.path !== '/login' && to.path !== '/register') {
+      if (!isAuthenticated.value && to.path !== '/login' && to.path !== '/register') {
         router.push({ name: 'Login' });
       }
     });
@@ -52,8 +53,9 @@ export default {
     watch(
       isAuthenticated,
       (newValue) => {
-        if (!newValue) router.push({ name: 'Login' });
-        else router.push({ name: 'Home' });
+        if (!newValue) {
+          if (route.path !== '/') router.push({ name: 'Login' });
+        } else router.push({ name: 'Home' });
       },
       { immediate: true },
     );

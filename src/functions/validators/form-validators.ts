@@ -89,7 +89,7 @@ class FormValidator {
         const regex = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#_*$%]).{6,20})/);
         const match = field.value.match(regex);
         console.log(match);
-        if (!match) this.errors.value[key] = 'A senha deve ter entre 6 a 20 caracteres e conter pelo menos uma letra maiúscula, uma minúscula, um numeral e ter caracteres especiais: @ # $ %';
+        if (!match) this.errors.value[key] = 'A senha deve ter entre 6 a 20 caracteres e conter pelo menos uma letra maiúscula, uma minúscula, um numeral e caracter especial: @ # $ % _ *';
       }
     }
 

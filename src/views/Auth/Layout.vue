@@ -52,7 +52,8 @@ export default {
 .box {
   background-color: white;
   border-radius: $border-radius;
-  width: fit-content;
+  min-width: 20rem;
+  width: 20%;
   padding: 1rem;
   color: $dark-blue;
 }
