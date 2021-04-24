@@ -9,6 +9,11 @@ class AuthStore extends StorageManager {
     this.store.dispatch('auth/setAuthentication', true);
   }
 
+  login(token: string | null): void {
+    this.setToken(token);
+    this.authenticate();
+  }
+
   logout(): void {
     this.store.dispatch('auth/setAuthentication', false);
     this.store.dispatch('auth/removeToken');

@@ -84,8 +84,7 @@ export default {
             email: email.value,
             password: password.value,
           });
-          auth.setToken(token);
-          auth.authenticate();
+          auth.login(token);
         }
       } catch (error) {
         const errorMessage = error.response.data.message;

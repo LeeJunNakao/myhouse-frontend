@@ -26,12 +26,15 @@
       :setValue="(value) => setAttribute('repeatPassword', value)"
     />
     <ErrorMessage v-if="formErrors.repeatPassword" :message="formErrors.repeatPassword" />
+    <ErrorMessage v-if="formErrors.response" :message="formErrors.response" />
   </Layout>
 </template>
 
 <script lang="ts">
 import { ref } from 'vue';
 import { setAttribute as setter } from '@/functions/setter';
+import { useStore } from 'vuex';
+import Auth from '@/functions/auth';
 import * as authService from '@/services/auth';
 import FormValidator from '@/functions/validators/form-validator';
 import Input from '@/components/Inputs';
@@ -45,6 +48,8 @@ export default {
     ErrorMessage,
   },
   setup(): { [key: string ]: any} {
+    const store = useStore();
+    const auth = new Auth(store);
     const name = ref('');
     const email = ref('');
     const password = ref('');
@@ -53,7 +58,7 @@ export default {
       name, email, password, repeatPassword,
     };
     const formErrors = ref({
-      name: null, email: null, password: null, repeatPassword: null,
+      name: null, email: null, password: null, repeatPassword: null, response: null,
     });
 
     const verifyPasswords = (): string => {
@@ -81,9 +86,9 @@ export default {
             email: email.value,
             password: password.value,
           });
-          console.log(token);
+          auth.login(token);
         } catch (error) {
-          console.log(error.response.data);
+          formErrors.value.response = error.response.data;
         }
       }
     };
