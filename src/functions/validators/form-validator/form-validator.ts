@@ -7,6 +7,7 @@ interface Data {
 interface Config {
   required?: boolean,
   type?: string,
+  callback?: () => string,
 }
 
 interface AttributesConfig {
@@ -35,7 +36,7 @@ class FormValidator {
       this.fields = fields;
       this.fieldsKeys = Object.keys(this.fields);
       this.errors = errors;
-      if (config) this.applyConfig(config);
+      this.applyConfig(config);
     }
 
     private applyConfig(config: AttributesConfig | null): void {
@@ -44,11 +45,12 @@ class FormValidator {
     }
 
     private setRequiredFields(): void {
-      if (this.config) {
-        const fields = Object.keys(this.config);
-        this.requiredFields = fields.filter((field) => this.config && this.config[field].required);
-        this.groupFieldsByType();
-      }
+      const notRequiredFileds = this.fieldsKeys.filter((field) => {
+        if (this.config && this.config[field]) return this.config[field].required === false;
+        return false;
+      });
+      this.requiredFields = this.fieldsKeys.filter((field) => !notRequiredFileds.includes(field));
+      this.groupFieldsByType();
     }
 
     private groupFieldsByType(): void {
@@ -88,7 +90,6 @@ class FormValidator {
       if (field) {
         const regex = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#_*$%]).{6,20})/);
         const match = field.value.match(regex);
-        console.log(match);
         if (!match) this.errors.value[key] = 'A senha deve ter entre 6 a 20 caracteres e conter pelo menos uma letra maiúscula, uma minúscula, um numeral e caracter especial: @ # $ % _ *';
       }
     }
@@ -102,9 +103,26 @@ class FormValidator {
       });
     }
 
-    validate(): void {
+    private validateCallbacks(): void {
+      const filterFields = (key: string): boolean => {
+        if (this.config && this.config[key] && this.config[key].callback) return true;
+        return false;
+      };
+      const fields = this.fieldsKeys.filter(filterFields);
+      fields.forEach((field) => {
+        const callback = this.config && this.config[field] && this.config[field].callback;
+        if (callback) {
+          const messageError = callback();
+          if (messageError) this.errors.value[field] = messageError;
+        }
+      });
+    }
+
+    validate(): boolean {
       this.validateRequiredFields();
       this.validateTypes();
+      this.validateCallbacks();
+      return this.fieldsKeys.some((field) => this.errors.value[field]);
     }
 }
 

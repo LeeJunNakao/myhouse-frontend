@@ -31,7 +31,8 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { Attribute } from '@/protocols/composition';
 import Auth from '@/functions/auth';
-import FormValidator from '@/functions/validators/form-validators';
+import { setAttribute as setter } from '@/functions/setter';
+import FormValidator from '@/functions/validators/form-validator';
 import { translateError } from '@/functions/translator';
 import * as authService from '@/services/auth';
 import Input from '@/components/Inputs';
@@ -47,7 +48,7 @@ export default {
     ErrorMessage,
     Loading,
   },
-  setup() {
+  setup(): { [key: string ]: any} {
     const store = useStore();
     const auth = new Auth(store);
 
@@ -57,12 +58,16 @@ export default {
 
     const formErrors = ref({ email: null, password: null, response: null });
     const attributes: { [index: string]: Attribute } = { email, password };
-    // eslint-disable-next-line max-len
-    const formValidator = new FormValidator(attributes, formErrors, { email: { required: true, type: 'email' }, password: { required: true, type: 'password' } });
-
-    const setAttribute = (attribute: string, value: string): void => {
-      attributes[attribute].value = value;
-    };
+    const formValidator = new FormValidator(attributes, formErrors, {
+      email: {
+        required: true,
+        type: 'email',
+      },
+      password: {
+        required: true,
+        type: 'password',
+      },
+    });
 
     const hasFormError = computed(() => {
       const errors = Object.values(formErrors.value);
@@ -89,6 +94,8 @@ export default {
         isLoading.value = false;
       }
     };
+
+    const setAttribute = (key: string, value: string) => setter(attributes, key, value);
 
     return {
       email,
