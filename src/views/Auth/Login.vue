@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 <template>
-  <Loading v-if="isLoading" class="loading"/>
+  <Loading v-if="isLoading" class="loading" data-test="loading"/>
   <Layout v-show="!isLoading"
   buttonText="Login"
   footerPath="/register"
@@ -8,21 +8,23 @@
   :handleSubmit="login"
   >
     <Input
+      data-test="email"
       label="Email"
       :value="email"
       :setValue="(v) => setAttribute('email', v)"
       @keydown.enter="login"
     />
-    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" />
+    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="emailError" />
     <Input
+      data-test="password"
       label="Password"
       type="password"
       :value="password"
       :setValue="(v) => setAttribute('password', v)"
       @keydown.enter="login"
     />
-    <ErrorMessage v-if="formErrors.password" :message="formErrors.password" />
-    <ErrorMessage v-if="formErrors.response" :message="translateError(formErrors.response)" />
+    <ErrorMessage v-if="formErrors.password" :message="formErrors.password" data-test="passwordError"/>
+    <ErrorMessage v-if="formErrors.response" :message="translateError(formErrors.response)"/>
   </Layout>
 </template>
 

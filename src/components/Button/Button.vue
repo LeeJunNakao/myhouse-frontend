@@ -1,6 +1,6 @@
 <template>
   <div class="button-wrapper">
-    <button @click="handleClick">{{ text }}</button>
+    <button @click="handleClick"  data-test="button">{{ text }}</button>
   </div>
 </template>
 

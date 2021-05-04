@@ -1,7 +1,7 @@
 <template>
   <div name="input" class="input-wrapper">
     <label>{{ label }}</label>
-    <input :value="value" @input="setValue($event.target.value)" :type="type || 'text'" />
+    <input :value="value" @input="setValue($event.target.value)" :type="type || 'text'" data-test="input"/>
   </div>
 </template>
 

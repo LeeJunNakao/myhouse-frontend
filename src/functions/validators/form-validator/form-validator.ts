@@ -1,4 +1,5 @@
 import { Attribute } from '@/protocols/composition';
+import errorMessages from './error-messages';
 
 interface Data {
     [key: string]: Attribute | null
@@ -69,7 +70,7 @@ class FormValidator {
       this.requiredFields.forEach((key) => {
         const field = this.fields[key];
         if (field && !field.value) {
-          this.errors.value[key] = 'Campo obrigatório.';
+          this.errors.value[key] = errorMessages.required;
         } else {
           this.errors.value[key] = null;
         }
@@ -81,7 +82,7 @@ class FormValidator {
       if (field) {
         const regex = new RegExp(/\S+@\S+\.\S+/);
         const match = field.value.match(regex);
-        if (!match) this.errors.value[key] = 'Deve ser um email válido';
+        if (!match) this.errors.value[key] = errorMessages.email;
       }
     }
 
@@ -90,7 +91,7 @@ class FormValidator {
       if (field) {
         const regex = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#_*$%]).{6,20})/);
         const match = field.value.match(regex);
-        if (!match) this.errors.value[key] = 'A senha deve ter entre 6 a 20 caracteres e conter pelo menos uma letra maiúscula, uma minúscula, um numeral e caracter especial: @ # $ % _ *';
+        if (!match) this.errors.value[key] = errorMessages.password;
       }
     }
 
