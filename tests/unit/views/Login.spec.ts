@@ -19,7 +19,7 @@ describe('Login', () => {
 
     const password = wrapper.get('[data-test="password"]');
     const passwordInput = password.get('[data-test="input"]');
-    expect(password.text()).toBe('Password');
+    expect(password.text()).toBe('Senha');
     expect(passwordInput.text()).toBe('');
   });
 
