@@ -53,15 +53,12 @@ describe('Login', () => {
         plugins: [store],
       },
     });
-    jest.spyOn(authService, 'login').mockImplementationOnce(async (): Promise<{ token: string }> => {
-      const promise = new Promise((resolve) => {
-        setTimeout(() => resolve({
-          token: 'token',
-        }), 5000);
+
+    jest.spyOn(authService, 'login').mockImplementationOnce(async () => new Promise((resolve) => {
+      resolve({
+        token: 'token',
       });
-      const response: { token: string } = await promise.then();
-      return response;
-    });
+    }));
 
     const email = wrapper.get('[data-test="email"]');
     const emailInput = email.get('[data-test="input"]');
