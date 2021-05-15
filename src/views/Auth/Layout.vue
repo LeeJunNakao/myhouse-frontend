@@ -6,10 +6,11 @@
       </div>
       <slot></slot>
       <div class="box__button-wrapper">
-        <Button :text="buttonText" :handleClick="handleSubmit"/>
+        <Button :text="buttonText" :handleClick="handleSubmit" />
       </div>
       <div class="box__footer">
         <a :href="footerPath">{{ footerText }}</a>
+        <slot name="footer"></slot>
       </div>
     </div>
   </Page>
@@ -64,7 +65,7 @@ export default {
   justify-content: center;
   margin-bottom: 3rem;
   font-weight: bold;
-  color: $dark-blue
+  color: $dark-blue;
 }
 
 .box__footer {

@@ -1,10 +1,11 @@
 <template>
-  <Loading v-if="isLoading" class="loading" data-test="loading"/>
-  <Layout v-show="!isLoading"
-  buttonText="Login"
-  footerPath="/register"
-  footerText="registrar"
-  :handleSubmit="login"
+  <Loading v-if="isLoading" class="loading" data-test="loading" />
+  <Layout
+    v-show="!isLoading"
+    buttonText="Login"
+    footerPath="/register"
+    footerText="registrar"
+    :handleSubmit="login"
   >
     <Input
       data-test="email"
@@ -27,7 +28,7 @@
       :message="formErrors.password"
       data-test="passwordError"
     />
-    <ErrorMessage v-if="formErrors.response" :message="translateError(formErrors.response)"/>
+    <ErrorMessage v-if="formErrors.response" :message="translateError(formErrors.response)" />
   </Layout>
 </template>
 
@@ -53,7 +54,7 @@ export default {
     ErrorMessage,
     Loading,
   },
-  setup(): { [key: string ]: any} {
+  setup(): { [key: string]: any } {
     const store = useStore();
     const auth = new Auth(store);
 
@@ -115,7 +116,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-[name="input"] + [name="input"] {
+[name='input'] + [name='input'] {
   margin-top: 1rem;
 }
 
