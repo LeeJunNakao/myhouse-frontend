@@ -2,8 +2,14 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Login from '@/views/Auth/Login.vue';
 import Register from '@/views/Auth/Register.vue';
 import Home from '@/views/Home/Home.vue';
+import RecoverPassword from '@/views/Auth/RecoverPassword.vue';
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+  },
   {
     path: '/login',
     name: 'Login',
@@ -15,9 +21,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Register,
   },
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
+    path: '/recover-password',
+    name: 'RecoverPassword',
+    component: RecoverPassword,
   },
 ];
 

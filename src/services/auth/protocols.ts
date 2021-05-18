@@ -1,24 +1,28 @@
 export interface LoginRequest {
-    email: string,
-    password: string,
+  email: string;
+  password: string;
 }
 
 export interface TokenResponse {
-    token: string,
+  token: string;
 }
 
 export interface TokenRequest {
-    token: string,
+  token: string;
 }
 
 export interface RegisterRequest {
-    name: string,
-    email: string,
-    password: string,
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface UserInfo {
-    id: number,
-    name: string,
-    email: string,
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface RecoverPasswordResponse {
+  message: string;
 }

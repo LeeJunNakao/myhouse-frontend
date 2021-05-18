@@ -45,7 +45,7 @@ export default {
     };
 
     router.beforeEach((to, from) => {
-      if (!isAuthenticated.value && to.path !== '/login' && to.path !== '/register') {
+      if (!isAuthenticated.value && to.path !== '/login' && to.path !== '/register' && to.path !== '/recover-password') {
         router.push({ name: 'Login' });
       }
     });

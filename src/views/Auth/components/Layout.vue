@@ -83,4 +83,12 @@ a {
   justify-content: center;
   margin-top: 2rem;
 }
+
+@media only screen and (max-width: $small-max-width) {
+  .box {
+    min-width: 100px !important;
+    width: 100vh !important;
+    max-width: 100vh !important;
+  }
+}
 </style>

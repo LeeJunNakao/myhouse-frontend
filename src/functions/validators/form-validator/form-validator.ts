@@ -89,7 +89,7 @@ class FormValidator {
     private validatePassword(key: string): void {
       const field = this.fields[key];
       if (field) {
-        const regex = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#_*$%]).{6,20})/);
+        const regex = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=[-#!$%^&*()_+|~=`{}[\]:";'<>?,./ ]).{6,20})/);
         const match = field.value.match(regex);
         if (!match) this.errors.value[key] = errorMessages.password;
       }

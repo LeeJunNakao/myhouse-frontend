@@ -30,7 +30,8 @@ export default {
 
 <style lang="scss" scoped>
 .input-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: 4rem 1fr;
   input {
     border: 0.15rem solid #126e82;
     border-radius: $border-radius;
@@ -43,7 +44,7 @@ export default {
 
   label {
     display: flex;
-    width: 4rem;
+    width: 100%;
     justify-content: flex-start;
     align-items: center;
   }

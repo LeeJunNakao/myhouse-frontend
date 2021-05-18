@@ -29,6 +29,9 @@
       data-test="passwordError"
     />
     <ErrorMessage v-if="formErrors.response" :message="translateError(formErrors.response)" />
+    <template v-slot:footer>
+      <a href="/recover-password" class="recover-password">recuperar senha</a>
+    </template>
   </Layout>
 </template>
 
@@ -44,7 +47,7 @@ import * as authService from '@/services/auth';
 import Input from '@/components/Inputs';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
 import Loading from '@/components/Loading/Loading.vue';
-import Layout from './Layout.vue';
+import Layout from './components/Layout.vue';
 
 export default {
   name: 'Home',
@@ -126,5 +129,18 @@ export default {
 
 .loading {
   height: 100vh;
+}
+
+a {
+  font-weight: bold;
+}
+
+.recover-password {
+  margin-left: 1rem;
+  color: $dark-blue;
+}
+
+.input-wrapper {
+  justify-content: center;
 }
 </style>

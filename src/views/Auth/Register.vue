@@ -57,7 +57,7 @@ import FormValidator from '@/functions/validators/form-validator';
 import Loading from '@/components/Loading/Loading.vue';
 import Input from '@/components/Inputs';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
-import Layout from './Layout.vue';
+import Layout from './components/Layout.vue';
 
 export default {
   components: {
@@ -126,8 +126,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .input-wrapper + .input-wrapper {
   margin-top: 1rem;
+}
+
+.input-wrapper {
+  justify-content: center;
 }
 </style>
