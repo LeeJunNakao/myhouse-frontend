@@ -1,5 +1,6 @@
 <template>
-  <Layout buttonText="Recuperar" footerText="logar" footerPath="/" :handleSubmit="submit">
+  <Loading v-if="isLoading" class="loading" data-test="loading" />
+  <Layout buttonText="Recuperar" footerText="logar" footerPath="/" :handleSubmit="submit" v-else>
     <Input
       label="Email"
       :value="email"
@@ -38,6 +39,7 @@ export default {
     const email = ref('');
     const recovered = ref(false);
     const formErrors = ref({ response: '', email: '' });
+    const isLoading = ref(false);
     const attributes = { email };
 
     const formValidator = new FormValidator(attributes, formErrors, { email: { type: 'email' } });
@@ -55,6 +57,7 @@ export default {
 
     const submit = async () => {
       try {
+        isLoading.value = true;
         clearErrors();
         formValidator.validate();
         if (!hasFormError.value) {
@@ -64,6 +67,8 @@ export default {
         }
       } catch (error) {
         formErrors.value.response = 'Não foi possível recuperar senha';
+      } finally {
+        isLoading.value = false;
       }
     };
 
@@ -73,6 +78,7 @@ export default {
       formErrors,
       recovered,
       submit,
+      isLoading,
     };
   },
 };
