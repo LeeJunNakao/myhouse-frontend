@@ -6,8 +6,12 @@
       :setValue="(value) => setAttribute('email', value)"
       data-test="email"
     />
-    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" />
-    <ErrorMessage v-if="formErrors.response" :message="formErrors.response" />
+    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="emailError" />
+    <ErrorMessage
+      v-if="formErrors.response"
+      :message="formErrors.response"
+      data-test="responseError"
+    />
     <div class="success-message" v-if="recovered">
       <label>Email recuperado com sucesso</label>
     </div>
