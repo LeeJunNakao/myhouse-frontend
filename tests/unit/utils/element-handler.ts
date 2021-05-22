@@ -1,4 +1,4 @@
-class ElementHandler {
+class DomHandler {
   private wrapper: any;
 
   constructor(wrapper: any) {
@@ -15,4 +15,4 @@ class ElementHandler {
   }
 }
 
-export { ElementHandler };
+export { DomHandler };

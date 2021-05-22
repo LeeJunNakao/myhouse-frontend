@@ -1,5 +1,5 @@
 <template>
-  <Loading v-if="isLoading" class="loading" data-test="loading"/>
+  <Loading v-if="isLoading" class="loading" data-test="loading" />
   <Layout v-else buttonText="Registrar" footerPath="/" footerText="logar" :handleSubmit="register">
     <Input
       label="Nome"
@@ -7,14 +7,14 @@
       :setValue="(value) => setAttribute('name', value)"
       data-test="name"
     />
-    <ErrorMessage v-if="formErrors.name" :message="formErrors.name" data-test="nameError"/>
+    <ErrorMessage v-if="formErrors.name" :message="formErrors.name" data-test="name-error" />
     <Input
       label="Email"
       :value="email"
       :setValue="(value) => setAttribute('email', value)"
       data-test="email"
     />
-    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="emailError" />
+    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="email-error" />
     <Input
       label="Senha"
       :value="password"
@@ -25,24 +25,24 @@
     <ErrorMessage
       v-if="formErrors.password"
       :message="formErrors.password"
-      data-test="passwordError"
+      data-test="password-error"
     />
     <Input
       label="Repita a senha"
       type="password"
       :value="repeatPassword"
       :setValue="(value) => setAttribute('repeatPassword', value)"
-      data-test="repeatPassword"
+      data-test="repeat-password"
     />
     <ErrorMessage
       v-if="formErrors.repeatPassword"
       :message="formErrors.repeatPassword"
-      data-test="repeatPasswordError"
+      data-test="repeat-password-error"
     />
     <ErrorMessage
       v-if="formErrors.response"
       :message="formErrors.response"
-      data-test="responseError"
+      data-test="response-error"
     />
   </Layout>
 </template>
@@ -66,7 +66,7 @@ export default {
     ErrorMessage,
     Loading,
   },
-  setup(): { [key: string ]: any} {
+  setup(): { [key: string]: any } {
     const store = useStore();
     const isLoading = ref(false);
     const auth = new Auth(store);
@@ -75,10 +75,17 @@ export default {
     const password = ref('');
     const repeatPassword = ref('');
     const attributes = {
-      name, email, password, repeatPassword,
+      name,
+      email,
+      password,
+      repeatPassword,
     };
     const formErrors = ref({
-      name: null, email: null, password: null, repeatPassword: null, response: null,
+      name: null,
+      email: null,
+      password: null,
+      repeatPassword: null,
+      response: null,
     });
 
     const verifyPasswords = (): string => {
@@ -120,7 +127,14 @@ export default {
     const setAttribute = (key: string, value: string) => setter(attributes, key, value);
 
     return {
-      name, email, password, repeatPassword, setAttribute, formErrors, register, isLoading,
+      name,
+      email,
+      password,
+      repeatPassword,
+      setAttribute,
+      formErrors,
+      register,
+      isLoading,
     };
   },
 };

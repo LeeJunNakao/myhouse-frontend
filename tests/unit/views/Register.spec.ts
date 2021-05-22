@@ -5,7 +5,13 @@ import RegisterView from '@/views/Auth/Register.vue';
 import store from '@/store';
 import errorMessages from '@/functions/validators/form-validator/error-messages';
 import * as authService from '@/services/auth';
-import { ResponseError } from '@tests/unit/utils';
+import {
+  ElementVerifier,
+  FormErrorVerifier,
+  DomHandler,
+  ServiceMocker,
+  ResponseError,
+} from '../utils';
 
 describe('Login', () => {
   it('render the component', () => {
@@ -15,25 +21,29 @@ describe('Login', () => {
       },
     });
 
-    const name = wrapper.get('[data-test="name"]');
-    const nameInput = name.get('[data-test="input"]');
-    expect(name.text()).toBe('Nome');
-    expect(nameInput.text()).toBe('');
+    const verifier = new ElementVerifier({
+      wrapper,
+      elements: ['name', 'email', 'password', 'repeat-password'],
+      children: [
+        { parentName: 'name', type: 'input' },
+        { parentName: 'email', type: 'input' },
+        { parentName: 'password', type: 'input' },
+        { parentName: 'repeat-password', type: 'input' },
+      ],
+    });
+    verifier.verifyElements([
+      { name: 'name', content: 'Nome' },
+      { name: 'email', content: 'Email' },
+      { name: 'password', content: 'Senha' },
+      { name: 'repeat-password', content: 'Repita a senha' },
+    ]);
 
-    const email = wrapper.get('[data-test="email"]');
-    const emailInput = email.get('[data-test="input"]');
-    expect(email.text()).toBe('Email');
-    expect(emailInput.text()).toBe('');
-
-    const password = wrapper.get('[data-test="password"]');
-    const passwordInput = password.get('[data-test="input"]');
-    expect(password.text()).toBe('Senha');
-    expect(passwordInput.text()).toBe('');
-
-    const repeatPassword = wrapper.get('[data-test="repeatPassword"]');
-    const repeatPasswordInput = repeatPassword.get('[data-test="input"]');
-    expect(repeatPassword.text()).toBe('Repita a senha');
-    expect(repeatPasswordInput.text()).toBe('');
+    verifier.verifyChildrenOf([
+      { parentName: 'name', content: '' },
+      { parentName: 'email', content: '' },
+      { parentName: 'password', content: '' },
+      { parentName: 'repeat-password', content: '' },
+    ]);
   });
 
   it('Shows form error when try submiting blank inputs', async () => {
@@ -43,27 +53,28 @@ describe('Login', () => {
       },
     });
 
-    const { formErrors } = wrapper.vm;
+    const domHandler = new DomHandler(wrapper);
+    domHandler.clickButton();
 
-    const button = wrapper.get('[data-test="button"]');
-    button.trigger('click');
-
-    expect(formErrors.name).toBe(errorMessages.required);
-    expect(formErrors.email).toBe(errorMessages.email);
-    expect(formErrors.password).toBe(errorMessages.password);
-    expect(formErrors.repeatPassword).toBe(errorMessages.required);
+    const errorVerifier = new FormErrorVerifier({ wrapper });
+    errorVerifier.expect('name').toBe(errorMessages.required);
+    errorVerifier.expect('email').toBe(errorMessages.email);
+    errorVerifier.expect('password').toBe(errorMessages.password);
+    errorVerifier.expect('repeatPassword').toBe(errorMessages.required);
 
     await nextTick();
 
-    const nameError = wrapper.get('[data-test="nameError"]');
-    const emailError = wrapper.get('[data-test="emailError"]');
-    const passwordError = wrapper.get('[data-test="passwordError"]');
-    const repeatPasswordError = wrapper.get('[data-test="repeatPasswordError"]');
+    const elementVerifier = new ElementVerifier({
+      wrapper,
+      elements: ['name-error', 'email-error', 'password-error', 'repeat-password-error'],
+    });
 
-    expect(nameError.text()).toBe(errorMessages.required);
-    expect(emailError.text()).toBe(errorMessages.email);
-    expect(passwordError.text()).toBe(errorMessages.password);
-    expect(repeatPasswordError.text()).toBe(errorMessages.required);
+    elementVerifier.verifyElements([
+      { name: 'name-error', content: errorMessages.required },
+      { name: 'email-error', content: errorMessages.email },
+      { name: 'password-error', content: errorMessages.password },
+      { name: 'repeat-password-error', content: errorMessages.required },
+    ]);
   });
 
   it('Shows error if password and repeat password are not the same', async () => {
@@ -73,27 +84,20 @@ describe('Login', () => {
       },
     });
 
-    const { formErrors } = wrapper.vm;
+    const domHandler = new DomHandler(wrapper);
+    domHandler.setValueInto('password', 'Kdsl@*4256');
+    domHandler.setValueInto('repeat-password', 'Kdsl@&4256');
+    domHandler.clickButton();
 
-    const passwordInput = wrapper.get('[data-test="password"]').get('[data-test="input"]');
-    const repeatPasswordInput = wrapper
-      .get('[data-test="repeatPassword"]')
-      .get('[data-test="input"]');
-
-    passwordInput.setValue('Kdsl@*4256');
-    repeatPasswordInput.setValue('Kdsl@&4256');
-
-    const button = wrapper.get('[data-test="button"]');
-    button.trigger('click');
-
-    expect(formErrors.password).toBe(null);
-    expect(formErrors.repeatPassword).toBe('Deve estar igual a senha.');
+    const errorVerifier = new FormErrorVerifier({ wrapper });
+    errorVerifier.expect('repeatPassword').toBe('Deve estar igual a senha.');
 
     await nextTick();
 
-    const repeatPasswordError = wrapper.get('[data-test="repeatPasswordError"]');
-
-    expect(repeatPasswordError.text()).toBe('Deve estar igual a senha.');
+    const elementVerifier = new ElementVerifier({ wrapper, elements: ['repeat-password-error'] });
+    elementVerifier.verifyElements([
+      { name: 'repeat-password-error', content: 'Deve estar igual a senha.' },
+    ]);
   });
 
   it('Shows error message from http request error', async () => {
@@ -103,40 +107,25 @@ describe('Login', () => {
       },
     });
 
-    jest.spyOn(authService, 'register').mockImplementationOnce(
-      async () =>
-        new Promise((resolve, reject) => {
-          throw new ResponseError('Error message');
-        }),
-    );
+    const serviceMocker = new ServiceMocker(authService);
+    serviceMocker.mockError('register', new ResponseError('Error message'));
 
-    const nameInput = wrapper.get('[data-test="name"]').get('[data-test="input"]');
-    const emailInput = wrapper.get('[data-test="email"]').get('[data-test="input"]');
-    const passwordInput = wrapper.get('[data-test="password"]').get('[data-test="input"]');
-    const repeatPasswordInput = wrapper
-      .get('[data-test="repeatPassword"]')
-      .get('[data-test="input"]');
-    const button = wrapper.get('[data-test="button"]');
-
-    const { formErrors } = wrapper.vm;
-
-    nameInput.setValue('Alguem da Silva');
-    emailInput.setValue('email@email.com');
-    passwordInput.setValue('Kdsl@*4256');
-    repeatPasswordInput.setValue('Kdsl@*4256');
-    button.trigger('click');
+    const domHandler = new DomHandler(wrapper);
+    domHandler.setValueInto('name', 'Alguem da Silva');
+    domHandler.setValueInto('email', 'email@email.com');
+    domHandler.setValueInto('password', 'Kdsl@*4256');
+    domHandler.setValueInto('repeat-password', 'Kdsl@*4256');
+    domHandler.clickButton();
 
     await nextTick();
 
-    const Loading = wrapper.get('[data-test="loading"]');
-
-    expect(Loading.text()).toBe('Loading...');
+    const loading = new ElementVerifier({ wrapper, elements: ['loading'] });
+    loading.verifyElements([{ name: 'loading', content: 'Loading...' }]);
 
     await flushPromises();
+    await nextTick();
 
-    expect(formErrors.response).toBe('Error message');
-
-    const responseMessageError = wrapper.get('[data-test="responseError"]');
-    expect(responseMessageError.text()).toBe('Error message');
+    const errorVerifier = new ElementVerifier({ wrapper, elements: ['response-error'] });
+    errorVerifier.verifyElements([{ name: 'response-error', content: 'Error message' }]);
   });
 });
