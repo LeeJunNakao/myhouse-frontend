@@ -3,7 +3,7 @@ import RecoverPassword from '@/views/Auth/RecoverPassword.vue';
 import {
   mount,
   ElementVerifier,
-  ElementHandler,
+  DomHandler,
   FormErrorVerifier,
   ServiceMocker,
   ResponseError,
@@ -28,7 +28,7 @@ describe('Login', () => {
 
   it('Shows error if tries submitting blank input', async () => {
     const wrapper = mount(RecoverPassword);
-    const elementHandler = new ElementHandler(wrapper);
+    const elementHandler = new DomHandler(wrapper);
     elementHandler.clickButton();
     const errorVerifier = new FormErrorVerifier({ wrapper });
     errorVerifier.expect('email').toBe(emailError);
@@ -46,7 +46,7 @@ describe('Login', () => {
     const serviceMocker = new ServiceMocker(service);
     serviceMocker.mockError('recoverPassword', new ResponseError(''));
     const wrapper = mount(RecoverPassword);
-    const elementHandler = new ElementHandler(wrapper);
+    const elementHandler = new DomHandler(wrapper);
     elementHandler.setValueInto('email', 'email@email.com');
     elementHandler.clickButton();
 
@@ -70,7 +70,7 @@ describe('Login', () => {
     const serviceMocker = new ServiceMocker(service);
     serviceMocker.mockSuccess('recoverPassword');
     const wrapper = mount(RecoverPassword);
-    const elementHandler = new ElementHandler(wrapper);
+    const elementHandler = new DomHandler(wrapper);
     elementHandler.setValueInto('email', 'email@email.com');
     elementHandler.clickButton();
 
