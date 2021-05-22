@@ -7,13 +7,13 @@
       :setValue="(value) => setAttribute('email', value)"
       data-test="email"
     />
-    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="emailError" />
+    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="email-error" />
     <ErrorMessage
       v-if="formErrors.response"
       :message="formErrors.response"
       data-test="responseError"
     />
-    <div class="success-message" v-if="recovered">
+    <div class="success-message" v-if="recovered" data-test="success-message">
       <label>Email recuperado com sucesso</label>
     </div>
   </Layout>
@@ -26,6 +26,7 @@ import * as service from '@/services/auth';
 import { setAttribute as setter } from '@/functions/setter';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
 import FormValidator from '@/functions/validators/form-validator';
+import Loading from '@/components/Loading/Loading.vue';
 import Layout from './components/Layout.vue';
 
 export default {
@@ -34,6 +35,7 @@ export default {
     Layout,
     Input,
     ErrorMessage,
+    Loading,
   },
   setup(): { [key: string]: any } {
     const email = ref('');

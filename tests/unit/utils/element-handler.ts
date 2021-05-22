@@ -9,6 +9,10 @@ class ElementHandler {
     if (inSelf) this.wrapper.trigger('button');
     else this.wrapper.get('[data-test="button"]').trigger('click');
   }
+
+  setValueInto(element: string, value: string) {
+    this.wrapper.get(`[data-test="${element}"]`).get('[data-test="input"]').setValue(value);
+  }
 }
 
 export { ElementHandler };

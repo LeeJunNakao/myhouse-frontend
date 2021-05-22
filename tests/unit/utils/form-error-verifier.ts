@@ -1,9 +1,12 @@
 // eslint-disable-next-line max-classes-per-file
-import { Ref } from '@/protocols/composition';
 
 interface ConstructorArgs {
   wrapper: any;
   formErrorsTitle?: string;
+}
+
+interface Errors {
+  [key: string]: string;
 }
 
 class ValuesValidator {
@@ -21,7 +24,7 @@ class ValuesValidator {
 class FormErrorVerifier {
   private wrapper: any;
 
-  private formErrors: { [key: string]: Ref<string> };
+  private formErrors: Errors;
 
   constructor({ wrapper, formErrorsTitle }: ConstructorArgs) {
     this.wrapper = wrapper;
@@ -29,7 +32,7 @@ class FormErrorVerifier {
   }
 
   expect(field: string): ValuesValidator {
-    const validator = new ValuesValidator(this.formErrors[field].value);
+    const validator = new ValuesValidator(this.formErrors[field]);
     return validator;
   }
 }

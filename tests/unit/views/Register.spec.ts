@@ -5,19 +5,8 @@ import RegisterView from '@/views/Auth/Register.vue';
 import store from '@/store';
 import errorMessages from '@/functions/validators/form-validator/error-messages';
 import * as authService from '@/services/auth';
+import { ResponseError } from '@tests/unit/utils';
 
-class ResponseError extends Error {
-    response: { data: { message: string }};
-
-    constructor(message: string) {
-      super();
-      this.response = {
-        data: {
-          message,
-        },
-      };
-    }
-}
 describe('Login', () => {
   it('render the component', () => {
     const wrapper = mount(RegisterView, {
@@ -87,7 +76,9 @@ describe('Login', () => {
     const { formErrors } = wrapper.vm;
 
     const passwordInput = wrapper.get('[data-test="password"]').get('[data-test="input"]');
-    const repeatPasswordInput = wrapper.get('[data-test="repeatPassword"]').get('[data-test="input"]');
+    const repeatPasswordInput = wrapper
+      .get('[data-test="repeatPassword"]')
+      .get('[data-test="input"]');
 
     passwordInput.setValue('Kdsl@*4256');
     repeatPasswordInput.setValue('Kdsl@&4256');
@@ -112,14 +103,19 @@ describe('Login', () => {
       },
     });
 
-    jest.spyOn(authService, 'register').mockImplementationOnce(async () => new Promise((resolve, reject) => {
-      throw new ResponseError('Error message');
-    }));
+    jest.spyOn(authService, 'register').mockImplementationOnce(
+      async () =>
+        new Promise((resolve, reject) => {
+          throw new ResponseError('Error message');
+        }),
+    );
 
     const nameInput = wrapper.get('[data-test="name"]').get('[data-test="input"]');
     const emailInput = wrapper.get('[data-test="email"]').get('[data-test="input"]');
     const passwordInput = wrapper.get('[data-test="password"]').get('[data-test="input"]');
-    const repeatPasswordInput = wrapper.get('[data-test="repeatPassword"]').get('[data-test="input"]');
+    const repeatPasswordInput = wrapper
+      .get('[data-test="repeatPassword"]')
+      .get('[data-test="input"]');
     const button = wrapper.get('[data-test="button"]');
 
     const { formErrors } = wrapper.vm;
