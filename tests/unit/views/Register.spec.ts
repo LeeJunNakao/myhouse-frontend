@@ -1,8 +1,6 @@
 import { nextTick } from 'vue';
 import flushPromises from 'flush-promises';
-import { mount } from '@vue/test-utils';
 import RegisterView from '@/views/Auth/Register.vue';
-import store from '@/store';
 import errorMessages from '@/functions/validators/form-validator/error-messages';
 import * as authService from '@/services/auth';
 import {
@@ -11,15 +9,12 @@ import {
   DomHandler,
   ServiceMocker,
   ResponseError,
+  mount
 } from '../utils';
 
 describe('Login', () => {
   it('render the component', () => {
-    const wrapper = mount(RegisterView, {
-      global: {
-        plugins: [store],
-      },
-    });
+    const wrapper = mount(RegisterView);
 
     const verifier = new ElementVerifier({
       wrapper,
@@ -47,11 +42,7 @@ describe('Login', () => {
   });
 
   it('Shows form error when try submiting blank inputs', async () => {
-    const wrapper = mount(RegisterView, {
-      global: {
-        plugins: [store],
-      },
-    });
+    const wrapper = mount(RegisterView);
 
     const domHandler = new DomHandler(wrapper);
     domHandler.clickButton();
@@ -78,11 +69,7 @@ describe('Login', () => {
   });
 
   it('Shows error if password and repeat password are not the same', async () => {
-    const wrapper = mount(RegisterView, {
-      global: {
-        plugins: [store],
-      },
-    });
+    const wrapper = mount(RegisterView);
 
     const domHandler = new DomHandler(wrapper);
     domHandler.setValueInto('password', 'Kdsl@*4256');
@@ -101,11 +88,7 @@ describe('Login', () => {
   });
 
   it('Shows error message from http request error', async () => {
-    const wrapper = mount(RegisterView, {
-      global: {
-        plugins: [store],
-      },
-    });
+    const wrapper = mount(RegisterView);
 
     const serviceMocker = new ServiceMocker(authService);
     serviceMocker.mockError('register', new ResponseError('Error message'));

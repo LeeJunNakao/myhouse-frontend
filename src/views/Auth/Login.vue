@@ -14,7 +14,7 @@
       :setValue="(v) => setAttribute('email', v)"
       @keydown.enter="login"
     />
-    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="emailError" />
+    <ErrorMessage v-if="formErrors.email" :message="formErrors.email" data-test="email-error" />
     <Input
       data-test="password"
       label="Senha"
@@ -26,7 +26,7 @@
     <ErrorMessage
       v-if="formErrors.password"
       :message="formErrors.password"
-      data-test="passwordError"
+      data-test="password-error"
     />
     <ErrorMessage v-if="formErrors.response" :message="translateError(formErrors.response)" />
     <template v-slot:footer>
