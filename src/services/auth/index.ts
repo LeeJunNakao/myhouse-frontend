@@ -1,4 +1,4 @@
-import { post } from './config';
+import { authService } from '../config';
 import {
   LoginRequest,
   TokenResponse,
@@ -7,6 +7,8 @@ import {
   UserInfo,
   RecoverPasswordResponse,
 } from './protocols';
+
+const { post } = authService;
 
 export const login = async (data: LoginRequest): Promise<TokenResponse> => {
   const response = await post('/signin', data);
