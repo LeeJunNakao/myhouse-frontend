@@ -1,14 +1,12 @@
 <template>
-  <div class="loading-wrapper" v-if="isLoading">
-    <Loading/>
+  <div class="loading-wrapper" style="width: 100vw;" v-if="isLoading">
+    <Loading />
   </div>
-  <router-view v-else />
+  <router-view style="width: 100vw;" v-else />
 </template>
 
 <script lang="ts">
-import {
-  watch, computed, ref,
-} from 'vue';
+import { watch, computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import AuthStore from '@/functions/auth';
@@ -45,7 +43,12 @@ export default {
     };
 
     router.beforeEach((to, from) => {
-      if (!isAuthenticated.value && to.path !== '/login' && to.path !== '/register' && to.path !== '/recover-password') {
+      if (
+        !isAuthenticated.value &&
+        to.path !== '/login' &&
+        to.path !== '/register' &&
+        to.path !== '/recover-password'
+      ) {
         router.push({ name: 'Login' });
       }
     });
@@ -70,7 +73,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 html,
 body,
 div,
@@ -188,7 +191,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 table {

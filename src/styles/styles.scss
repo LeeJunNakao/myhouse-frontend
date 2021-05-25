@@ -1,2 +1,20 @@
 @import './_colors.scss';
 @import './_config.scss';
+
+.icon {
+  border-radius: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &.blue {
+    color: $dark-blue;
+    &:active {
+      color: $blue;
+    }
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
