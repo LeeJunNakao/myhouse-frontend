@@ -1,6 +1,27 @@
 @import './_colors.scss';
 @import './_config.scss';
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+label {
+  font-size: 1rem;
+  margin-right: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+a {
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
+  &:visited {
+    color: inherit;
+  }
+}
+
 .icon {
   border-radius: 100%;
   -webkit-user-select: none;
@@ -17,4 +38,8 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.hide {
+  display: none;
 }

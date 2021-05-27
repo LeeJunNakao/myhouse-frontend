@@ -13,6 +13,7 @@
       'align-center': align === 'center',
       'align-end': align === 'end',
       'template-columns': templateColumns,
+      'wrapper-flex-column': direction === 'column',
     }"
   >
     <slot></slot>
@@ -25,6 +26,7 @@ export default {
   props: {
     full: Boolean,
     grid: Boolean,
+    direction: String,
     width: String,
     justify: String,
     align: String,
@@ -50,6 +52,10 @@ export default {
 <style scoped lang="scss">
 .wrapper {
   display: flex;
+}
+
+.wrapper-flex-column {
+  flex-direction: column;
 }
 
 .wrapper-grid {
