@@ -22,6 +22,17 @@ a {
   }
 }
 
+input {
+  outline: none;
+}
+
+.text-not-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .icon {
   border-radius: 100%;
   -webkit-user-select: none;
@@ -42,4 +53,8 @@ a {
 
 .hide {
   display: none;
+}
+
+.upside-down {
+  transform: rotate(180deg);
 }

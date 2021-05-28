@@ -44,7 +44,7 @@ import { setAttribute as setter } from '@/functions/setter';
 import FormValidator from '@/functions/validators/form-validator';
 import { translateError } from '@/functions/translator';
 import * as authService from '@/services/auth';
-import Input from '@/components/Inputs';
+import { Input } from '@/components/Inputs';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
 import Loading from '@/components/Loading/Loading.vue';
 import Layout from './components/Layout.vue';

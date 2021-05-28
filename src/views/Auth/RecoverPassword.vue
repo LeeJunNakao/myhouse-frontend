@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { ref, computed } from 'vue';
-import Input from '@/components/Inputs';
+import { Input } from '@/components/Inputs';
 import * as service from '@/services/auth';
 import { setAttribute as setter } from '@/functions/setter';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';

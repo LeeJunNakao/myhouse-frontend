@@ -3,6 +3,7 @@
     <Page>
       <Panel>
         <UserInfo />
+        <UserHouses />
       </Panel>
     </Page>
   </div>
@@ -12,6 +13,7 @@
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
 import UserInfo from './components/UserInfo.vue';
+import UserHouses from './components/UserHouses.vue';
 
 export default {
   name: 'Home',
@@ -19,6 +21,7 @@ export default {
     Page,
     Panel,
     UserInfo,
+    UserHouses,
   },
 };
 </script>

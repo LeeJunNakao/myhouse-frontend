@@ -55,7 +55,7 @@ import Auth from '@/functions/auth';
 import * as authService from '@/services/auth';
 import FormValidator from '@/functions/validators/form-validator';
 import Loading from '@/components/Loading/Loading.vue';
-import Input from '@/components/Inputs';
+import { Input } from '@/components/Inputs';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
 import Layout from './components/Layout.vue';
 
