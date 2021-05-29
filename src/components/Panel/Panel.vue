@@ -12,24 +12,6 @@ import Title from '@/components/Layout/Title.vue';
 
 export default {
   name: 'Layout',
-  props: {
-    buttonText: {
-      required: true,
-      type: String,
-    },
-    footerPath: {
-      required: true,
-      type: String,
-    },
-    footerText: {
-      required: true,
-      type: String,
-    },
-    handleSubmit: {
-      required: true,
-      type: Function,
-    },
-  },
   components: {
     Title,
   },

@@ -1,7 +1,7 @@
 import { Slots } from 'vue';
 
 export type Data = {
-  [key: string]: unknown;
+  [key: string]: any;
 };
 
 export interface SetupContext {

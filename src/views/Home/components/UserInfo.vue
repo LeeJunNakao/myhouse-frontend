@@ -76,6 +76,7 @@ export default {
 #user-info-wrapper {
   display: flex;
   justify-content: center;
+  color: $dark-blue;
 }
 
 #icon-wrapper {

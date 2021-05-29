@@ -62,6 +62,7 @@
 <script lang="ts">
 import { ref, computed, watch } from 'vue';
 import Wrapper from '@/components/Layout/Wrapper.vue';
+import { Data, SetupContext } from '@/protocols/composition';
 
 interface Option {
   label: string;
@@ -76,7 +77,7 @@ export default {
   components: {
     Wrapper,
   },
-  setup(props: any) {
+  setup(props: Data, { emit }: SetupContext): Data {
     const searchValue = ref('');
     const expand = ref(false);
     const currentOptionIndex = ref(0);
@@ -95,6 +96,7 @@ export default {
       selectedOption.value = option;
       expand.value = false;
       shouldSearch.value = false;
+      emit('handleSelect', option);
     };
 
     const filteredOptions = computed(() => {

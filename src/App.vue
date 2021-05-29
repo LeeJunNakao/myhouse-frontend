@@ -1,8 +1,8 @@
 <template>
-  <div class="loading-wrapper" style="width: 100vw;" v-if="isLoading">
+  <div class="loading-wrapper" v-if="isLoading">
     <Loading />
   </div>
-  <router-view style="width: 100vw;" v-else />
+  <router-view v-else />
 </template>
 
 <script lang="ts">
@@ -203,5 +203,6 @@ table {
 <style scoped>
 .loading-wrapper {
   height: 100vh;
+  width: 100vw;
 }
 </style>

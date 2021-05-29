@@ -12,7 +12,6 @@
       'align-start': align === 'start',
       'align-center': align === 'center',
       'align-end': align === 'end',
-      'template-columns': templateColumns,
       'wrapper-flex-column': direction === 'column',
     }"
   >
@@ -20,7 +19,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { ref, watch, onMounted } from 'vue';
+import { Data } from '@/protocols/composition';
+import { setStyleProperty } from '@/functions/setter';
+
 export default {
   name: 'Wrapper',
   props: {
@@ -31,20 +34,38 @@ export default {
     justify: String,
     align: String,
     templateColumns: String,
+    gapColumns: String,
   },
-  watch: {
-    width: {
-      immediate: true,
-      handler(w) {
-        if (w) this.$refs.wrapper.style.width = w;
-      },
-    },
-    templateColumns: {
-      immediate: true,
-      handler(template) {
-        if (template) this.$refs.wrapper.style.gridTemplateColumn = template;
-      },
-    },
+  setup(props: Data): Data {
+    const wrapper = ref<any>(null);
+    const width = ref(props.width);
+    onMounted(() => {
+      watch(
+        width,
+        (w) => {
+          setStyleProperty(wrapper, 'width', w);
+        },
+        { immediate: true },
+      );
+      const templateColumns = ref(props.templateColumns);
+      watch(
+        templateColumns,
+        (columns) => {
+          setStyleProperty(wrapper, 'grid-template-columns', columns);
+        },
+        { immediate: true },
+      );
+      const gapColumns = ref(props.gapColumns);
+      watch(
+        gapColumns,
+        (gap) => {
+          setStyleProperty(wrapper, 'gap-columns', gap);
+        },
+        { immediate: true },
+      );
+    });
+
+    return { wrapper };
   },
 };
 </script>
