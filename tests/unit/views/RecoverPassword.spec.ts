@@ -1,27 +1,23 @@
 import { nextTick } from 'vue';
 import RecoverPassword from '@/views/Auth/RecoverPassword.vue';
-import {
-  mount,
+import errorMessages from '@/functions/validators/form-validator/error-messages';
+import * as service from '@/services/auth';
+import flushPromises from 'flush-promises';
+import { mount,
   ElementVerifier,
   DomHandler,
   FormErrorVerifier,
   ServiceMocker,
-  ResponseError,
-} from '../utils';
-import errorMessages from '@/functions/validators/form-validator/error-messages';
-import * as service from '@/services/auth';
-import flushPromises from 'flush-promises';
+  ResponseError } from '../utils';
 
 const { email: emailError } = errorMessages;
 
 describe('Login', () => {
   it('Renders the component', () => {
     const wrapper = mount(RecoverPassword);
-    const verifier = new ElementVerifier({
-      wrapper,
+    const verifier = new ElementVerifier({ wrapper,
       elements: ['email'],
-      children: [{ parentName: 'email', type: 'input' }],
-    });
+      children: [{ parentName: 'email', type: 'input' }] });
     verifier.verifyElements([{ name: 'email', content: 'Email' }]);
     verifier.verifyChildrenOf([{ parentName: 'email', content: '' }]);
   });
@@ -35,10 +31,8 @@ describe('Login', () => {
 
     await nextTick();
 
-    const elementVerifier = new ElementVerifier({
-      wrapper,
-      elements: ['email-error'],
-    });
+    const elementVerifier = new ElementVerifier({ wrapper,
+      elements: ['email-error'] });
     elementVerifier.verifyElements([{ name: 'email-error', content: emailError }]);
   });
 
@@ -52,10 +46,8 @@ describe('Login', () => {
 
     await nextTick();
 
-    const loaderVerifier = new ElementVerifier({
-      wrapper,
-      elements: ['loading'],
-    });
+    const loaderVerifier = new ElementVerifier({ wrapper,
+      elements: ['loading'] });
     loaderVerifier.verifyElements([{ name: 'loading', content: 'Loading...' }]);
 
     await flushPromises();
@@ -76,10 +68,8 @@ describe('Login', () => {
 
     await nextTick();
 
-    const loaderVerifier = new ElementVerifier({
-      wrapper,
-      elements: ['loading'],
-    });
+    const loaderVerifier = new ElementVerifier({ wrapper,
+      elements: ['loading'] });
     loaderVerifier.verifyElements([{ name: 'loading', content: 'Loading...' }]);
 
     await flushPromises();

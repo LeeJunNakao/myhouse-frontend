@@ -29,14 +29,11 @@ import FormValidator from '@/functions/validators/form-validator';
 import Loading from '@/components/Loading/Loading.vue';
 import Layout from './components/Layout.vue';
 
-export default {
-  name: 'RecoverPassword',
-  components: {
-    Layout,
+export default { name: 'RecoverPassword',
+  components: { Layout,
     Input,
     ErrorMessage,
-    Loading,
-  },
+    Loading },
   setup(): { [key: string]: any } {
     const email = ref('');
     const recovered = ref(false);
@@ -74,16 +71,13 @@ export default {
       }
     };
 
-    return {
-      email,
+    return { email,
       setAttribute,
       formErrors,
       recovered,
       submit,
-      isLoading,
-    };
-  },
-};
+      isLoading };
+  } };
 </script>
 
 <style lang="scss" scoped>

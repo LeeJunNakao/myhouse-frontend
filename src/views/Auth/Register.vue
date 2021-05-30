@@ -59,85 +59,65 @@ import { Input } from '@/components/Inputs';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
 import Layout from './components/Layout.vue';
 
-export default {
-  components: {
-    Layout,
-    Input,
-    ErrorMessage,
-    Loading,
-  },
-  setup(): { [key: string]: any } {
-    const store = useStore();
-    const isLoading = ref(false);
-    const auth = new Auth(store);
-    const name = ref('');
-    const email = ref('');
-    const password = ref('');
-    const repeatPassword = ref('');
-    const attributes = {
-      name,
-      email,
-      password,
-      repeatPassword,
-    };
-    const formErrors = ref({
-      name: null,
-      email: null,
-      password: null,
-      repeatPassword: null,
-      response: null,
-    });
+export default { components: { Layout,
+  Input,
+  ErrorMessage,
+  Loading },
+setup(): { [key: string]: any } {
+  const store = useStore();
+  const isLoading = ref(false);
+  const auth = new Auth(store);
+  const name = ref('');
+  const email = ref('');
+  const password = ref('');
+  const repeatPassword = ref('');
+  const attributes = { name,
+    email,
+    password,
+    repeatPassword };
+  const formErrors = ref({ name: null,
+    email: null,
+    password: null,
+    repeatPassword: null,
+    response: null });
 
-    const verifyPasswords = (): string => {
-      if (password.value !== repeatPassword.value) return 'Deve estar igual a senha.';
-      return '';
-    };
-    const formValidator = new FormValidator(attributes, formErrors, {
-      email: {
-        type: 'email',
-      },
-      password: {
-        type: 'password',
-      },
-      repeatPassword: {
-        callback: verifyPasswords,
-      },
-    });
+  const verifyPasswords = (): string => {
+    if (password.value !== repeatPassword.value) return 'Deve estar igual a senha.';
+    return '';
+  };
+  const formValidator = new FormValidator(attributes, formErrors, { email: { type: 'email' },
+    password: { type: 'password' },
+    repeatPassword: { callback: verifyPasswords } });
 
-    const register = async (): Promise<void> => {
-      const hasError = formValidator.validate();
-      if (!hasError) {
-        isLoading.value = true;
-        try {
-          const { token } = await authService.register({
-            name: name.value,
-            email: email.value,
-            password: password.value,
-          });
-          auth.login(token);
-        } catch (error) {
-          const message = error.response && error.response.data.message;
-          if (message) formErrors.value.response = message;
-        } finally {
-          isLoading.value = false;
-        }
+  const register = async (): Promise<void> => {
+    const hasError = formValidator.validate();
+    if (!hasError) {
+      isLoading.value = true;
+      try {
+        const { token } = await authService.register({ name: name.value,
+          email: email.value,
+          password: password.value });
+        auth.login(token);
+      } catch (error) {
+        const message = error.response && error.response.data.message;
+        if (message) formErrors.value.response = message;
+      } finally {
+        isLoading.value = false;
       }
-    };
+    }
+  };
 
-    const setAttribute = (key: string, value: string) => setter(attributes, key, value);
+  const setAttribute = (key: string, value: string) => setter(attributes, key, value);
 
-    return {
-      name,
-      email,
-      password,
-      repeatPassword,
-      setAttribute,
-      formErrors,
-      register,
-      isLoading,
-    };
-  },
-};
+  return { name,
+    email,
+    password,
+    repeatPassword,
+    setAttribute,
+    formErrors,
+    register,
+    isLoading };
+} };
 </script>
 
 <style scoped lang="scss">

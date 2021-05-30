@@ -3,8 +3,9 @@
     <Select
       v-if="options.length"
       placeholder="Selecione uma casa"
-      @handleSelect="handleSelect"
       :options="options"
+      :disabled="selectDisabled"
+      @handleSelect="handleSelect"
     />
     <MessageBox v-else text="Não há nenhuma casa cadastrada" />
   </div>
@@ -12,54 +13,33 @@
 
 <script lang="ts">
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 import { Select } from '@/components/Inputs';
 import { Data, SetupContext } from '@/protocols/composition';
 import MessageBox from '@/components/MessageBox/MessageBox.vue';
+import FormHandler from '@/functions/houses';
 
 const OPTIONS: any[] = [
-  'casa A',
-  'casa B',
-  'casa C',
-  'casa D',
-  'casa E',
-  'casa F',
-  'casa G',
-  'casa H',
-  'casa I',
-  'casa J',
-  'casa K',
-  'casa L',
-  'casa M',
-  'casa N',
-  'casa O',
-  'casa P',
-  'casa Q',
+  { id: 1, label: 'Casa A' },
+  { id: 1, label: 'Casa B' },
 ];
 
 export default {
   name: 'UserHouses',
-  components: {
-    Select,
-    MessageBox,
+  props: {
+    selectDisabled: Boolean,
   },
+  components: { Select, MessageBox },
   setup(props: Data, { emit }: SetupContext): Data {
+    const store = useStore();
+    const formHandler = new FormHandler(store);
     const options = ref(OPTIONS);
-    const hideNewHouse = ref(false);
 
-    const handleSelect = (value: any) => {
-      emit('handleSelect', value);
+    const handleSelect = (house: any) => {
+      formHandler.selectHouse(house);
     };
 
-    const handleNewHouse = () => {
-      hideNewHouse.value = true;
-    };
-
-    return {
-      handleSelect,
-      options,
-      handleNewHouse,
-      hideNewHouse,
-    };
+    return { handleSelect, options };
   },
 };
 </script>

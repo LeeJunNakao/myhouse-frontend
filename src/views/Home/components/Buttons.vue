@@ -1,111 +1,119 @@
 <template>
   <Wrapper full align="center" justify="space-between" class="button-wrapper">
-    <transition @before-enter="enterHouse" @after-leave="leaveNewHouse" name="new-house">
-      <Stamp
-        icon="cottage"
-        text="Nova casa"
-        @click="handleNewHouse"
-        class="transition-ease"
-        v-show="!selectedHouse && shouldDisplayNewHouse"
-      />
-    </transition>
     <Stamp
-      icon="mode_edit"
-      text="Editar casa"
-      @click="() => {}"
+      :icon="config.first.icon"
+      :text="config.first.text"
+      :disabled="config.first.disabled"
+      @click="config.first.handler"
       class="transition-ease"
-      v-show="shouldDisplayEdit"
     />
+
     <Stamp
-      icon="attach_money"
-      text="Compras"
-      @click="() => {}"
+      :icon="config.second.icon"
+      :text="config.second.text"
+      :disabled="config.second.disabled"
+      @click="config.second.handler"
       class="transition-ease"
-      :disabled="!selectedHouse"
     />
-    <transition @after-leave="leaveBack" name="back">
-      <Stamp
-        icon="backspace"
-        text="Voltar"
-        @click="handleBack"
-        class="transition-ease"
-        v-show="showForm"
-      />
-    </transition>
   </Wrapper>
 </template>
 
 <script lang="ts">
-import {
-  ref,
-  toRefs,
-  computed,
-  onMounted,
-  watch,
-} from 'vue';
-import { Data } from '@/protocols/composition';
+import { ref, toRefs, computed, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
+import { Data, SetupContext } from '@/protocols/composition';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import Stamp from '@/components/Button/Stamp.vue';
+import FormHandler from '@/functions/houses';
 
 export default {
   name: 'Buttons',
-  components: {
-    Wrapper,
-    Stamp,
-  },
+  components: { Wrapper, Stamp },
   props: {
     showForm: Boolean,
     setShowForm: Function,
-    selectedHouse: String,
+    selectedHouse: Object,
   },
-  setup(props: Data): Data {
-    const hideNewHouse = ref(false);
-    const { showForm, selectedHouse: house } = toRefs(props);
-    const shouldDisplayEdit = ref(false);
-
-    const shouldDisplayNewHouse = computed(() => !hideNewHouse.value);
-    const shouldDisplayBack = computed(() => showForm.value);
-
-    onMounted(() => {
-      watch(
-        house,
-        (h) => {
-          console.log('house', h);
-        },
-        { immediate: true },
-      );
-    });
+  setup(props: Data, { emit }: SetupContext): Data {
+    const store = useStore();
+    const formHandler = new FormHandler(store);
+    const house = computed(() => formHandler.getSelectedHouse());
+    const newHouseMode = ref(false);
+    const editMode = ref(false);
+    const { showForm } = toRefs(props);
 
     const handleNewHouse = () => {
-      hideNewHouse.value = true;
+      props.setShowForm(true);
+      newHouseMode.value = true;
     };
-
-    const leaveNewHouse = () => {
-      props.setShowForm(hideNewHouse.value);
-      if (house.value) shouldDisplayEdit.value = true;
-    };
-
-    const enterHouse = () => {
-      shouldDisplayEdit.value = false;
-    };
-
-    const leaveBack = () => {
-      hideNewHouse.value = false;
+    const handleEditMode = () => {
+      editMode.value = true;
+      newHouseMode.value = false;
     };
     const handleBack = () => {
       props.setShowForm(false);
+      editMode.value = false;
+      newHouseMode.value = false;
     };
 
+    const config = computed(() => {
+      const newHouse = {
+        text: 'Nova casa',
+        icon: 'cottage',
+        handler: handleNewHouse,
+      };
+
+      const back = {
+        text: 'Voltar',
+        icon: 'backspace',
+        handler: handleBack,
+      };
+
+      const edit = {
+        text: 'Editar',
+        icon: 'mode_edit',
+        handler: handleEditMode,
+      };
+
+      const purchase = {
+        text: 'Compras',
+        icon: 'attach_money',
+        handler: handleBack,
+      };
+
+      const unselected = {
+        first: newHouseMode.value ? { ...newHouse, disabled: true } : newHouse,
+        second: newHouseMode.value ? back : { ...back, disabled: true },
+      };
+
+      const selected = {
+        first: edit,
+        second: showForm.value ? back : purchase,
+      };
+
+      if (house.value) return selected;
+      return unselected;
+    });
+
+    onMounted(() => {
+      watch(house, (h) => {
+        newHouseMode.value = false;
+        if (!h) {
+          props.setShowForm(false);
+        }
+      });
+      watch(newHouseMode, (mode) => {
+        if (mode) props.setShowForm(true);
+        emit('changeCreateMode', mode);
+      });
+      watch(editMode, (mode) => {
+        if (mode) props.setShowForm(true);
+        emit('changeEditMode', mode);
+      });
+    });
+
     return {
-      hideNewHouse,
-      shouldDisplayNewHouse,
-      shouldDisplayBack,
-      shouldDisplayEdit,
-      handleNewHouse,
-      enterHouse,
-      leaveNewHouse,
-      handleBack,
-      leaveBack,
+      config,
     };
   },
 };

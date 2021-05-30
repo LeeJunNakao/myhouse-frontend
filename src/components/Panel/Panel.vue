@@ -10,12 +10,8 @@
 <script>
 import Title from '@/components/Layout/Title.vue';
 
-export default {
-  name: 'Layout',
-  components: {
-    Title,
-  },
-};
+export default { name: 'Layout',
+  components: { Title } };
 </script>
 
 <style lang="scss" scoped>
@@ -23,7 +19,7 @@ export default {
   padding: 1rem;
   background-color: white;
   border-radius: $border-radius;
-  height: 500px;
+  height: 25rem;
   width: 300px;
 }
 

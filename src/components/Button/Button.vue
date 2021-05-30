@@ -5,19 +5,11 @@
 </template>
 
 <script>
-export default {
-  name: 'Button',
-  props: {
-    text: {
-      type: String,
-      required: true,
-    },
-    handleClick: {
-      type: Function,
-      required: true,
-    },
-  },
-};
+export default { name: 'Button',
+  props: { text: { type: String,
+    required: true },
+  handleClick: { type: Function,
+    required: true } } };
 </script>
 
 <style lang="scss" scoped>

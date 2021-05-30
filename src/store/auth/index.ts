@@ -3,12 +3,10 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 
-const auth = {
-  namespaced: true,
+const auth = { namespaced: true,
   state,
   mutations,
   actions,
-  getters,
-};
+  getters };
 
 export default auth;

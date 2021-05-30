@@ -1,10 +1,8 @@
 import { StateType } from './protocols';
 
-const state = (): StateType => ({
-  id: null,
+const state = (): StateType => ({ id: null,
   name: '',
-  email: '',
-});
+  email: '' });
 
 export { StateType };
 export default state;

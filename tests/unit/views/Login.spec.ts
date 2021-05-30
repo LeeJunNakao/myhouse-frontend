@@ -8,14 +8,12 @@ describe('Login', () => {
   it('render the component', () => {
     const wrapper = mount(LoginView);
 
-    const elementVerifier = new ElementVerifier({
-      wrapper,
+    const elementVerifier = new ElementVerifier({ wrapper,
       elements: ['email', 'password'],
       children: [
         { parentName: 'email', type: 'input' },
         { parentName: 'password', type: 'input' },
-      ],
-    });
+      ] });
 
     elementVerifier.verifyElements([
       { name: 'email', content: 'Email' },
@@ -35,10 +33,8 @@ describe('Login', () => {
 
     await nextTick();
 
-    const elementVerifier = new ElementVerifier({
-      wrapper,
-      elements: ['email-error', 'password-error'],
-    });
+    const elementVerifier = new ElementVerifier({ wrapper,
+      elements: ['email-error', 'password-error'] });
     elementVerifier.verifyElements([
       { name: 'email-error', content: errorMessages.email },
       { name: 'password-error', content: errorMessages.password },

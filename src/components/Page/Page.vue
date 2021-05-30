@@ -5,9 +5,7 @@
 </template>
 
 <script>
-export default {
-  name: 'PageWrapper',
-};
+export default { name: 'PageWrapper' };
 </script>
 
 <style scoped lang="scss">

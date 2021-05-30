@@ -1,5 +1,5 @@
 <template>
-  <Wrapper direction="column" class="select-wrapper">
+  <Wrapper direction="column" class="select-wrapper" :class="{ disabled }">
     <Wrapper full>
       <input
         v-model="searchValue"
@@ -8,11 +8,13 @@
         @input="shouldSearch = true"
         name="select-component"
         :placeholder="placeholder"
+        :disabled="disabled"
+        :class="{ 'text-not-select': disabled }"
       />
       <span
         class="material-icons icon"
         tabindex="0"
-        @click="expand = !expand"
+        @click="handleClick"
         @blur="handleBlur"
         name="select-component"
       >
@@ -41,7 +43,7 @@
           @click="handleSelect(option)"
           name="select-component"
         >
-          {{ option }}
+          {{ option.label || option }}
         </div>
         <div
           class="list-navigate"
@@ -60,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, toRefs } from 'vue';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import { Data, SetupContext } from '@/protocols/composition';
 
@@ -71,12 +73,12 @@ interface Option {
 export default {
   name: 'Select',
   props: {
+    disabled: Boolean,
     placeholder: String,
+    /* A plain string[] string or Option[] */
     options: Array,
   },
-  components: {
-    Wrapper,
-  },
+  components: { Wrapper },
   setup(props: Data, { emit }: SetupContext): Data {
     const searchValue = ref('');
     const expand = ref(false);
@@ -85,7 +87,11 @@ export default {
     const options = ref(props.options);
     const selectedOption = ref('');
     const shouldSearch = ref(false);
+    const { disabled } = toRefs(props);
 
+    const handleClick = () => {
+      if (!disabled.value) expand.value = !expand.value;
+    };
     const handleBlur = (event: any) => {
       if (!event.relatedTarget || event.relatedTarget.getAttribute('name') !== 'select-component') {
         expand.value = false;
@@ -102,8 +108,11 @@ export default {
     const filteredOptions = computed(() => {
       const word = searchValue.value;
       if (word && shouldSearch.value) {
-        const filteredWords = options.value.filter((option: string) => {
-          const normalizedOption = option.toLowerCase();
+        const filteredWords = options.value.filter((option: Option | string) => {
+          const optionsIsString: boolean = typeof option === 'string';
+          const normalizedOption = optionsIsString
+            ? (option as string).toLowerCase()
+            : (option as Option).label.toLowerCase();
           const normalizedWord = word.toLowerCase();
           return normalizedOption.match(normalizedWord);
         });
@@ -152,6 +161,7 @@ export default {
     return {
       searchValue,
       expand,
+      handleClick,
       handleBlur,
       currentOptionIndex,
       displayedOptions,
@@ -203,6 +213,7 @@ $options-padding: 0.5rem;
   background-color: white;
   justify-content: center;
   z-index: 100;
+  color: $dark-blue;
 
   &:hover {
     cursor: pointer;
@@ -220,6 +231,7 @@ $options-padding: 0.5rem;
   justify-content: center;
   align-items: center;
   background-color: white;
+  color: $dark-blue;
 
   &:hover {
     cursor: pointer;
@@ -232,6 +244,15 @@ $options-padding: 0.5rem;
 
   &:first-child {
     border-bottom: 0.1rem solid $dark-blue;
+  }
+}
+
+.disabled {
+  background-color: $gray;
+  color: $dark-gray;
+  input {
+    background: $gray;
+    color: $dark-gray;
   }
 }
 </style>

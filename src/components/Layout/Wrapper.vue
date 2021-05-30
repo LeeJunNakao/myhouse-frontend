@@ -24,18 +24,15 @@ import { ref, watch, onMounted } from 'vue';
 import { Data } from '@/protocols/composition';
 import { setStyleProperty } from '@/functions/setter';
 
-export default {
-  name: 'Wrapper',
-  props: {
-    full: Boolean,
+export default { name: 'Wrapper',
+  props: { full: Boolean,
     grid: Boolean,
     direction: String,
     width: String,
     justify: String,
     align: String,
     templateColumns: String,
-    gapColumns: String,
-  },
+    gapColumns: String },
   setup(props: Data): Data {
     const wrapper = ref<any>(null);
     const width = ref(props.width);
@@ -66,8 +63,7 @@ export default {
     });
 
     return { wrapper };
-  },
-};
+  } };
 </script>
 
 <style scoped lang="scss">

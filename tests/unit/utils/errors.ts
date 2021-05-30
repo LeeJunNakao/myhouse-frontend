@@ -3,10 +3,6 @@ export class ResponseError extends Error {
 
   constructor(message: string) {
     super();
-    this.response = {
-      data: {
-        message,
-      },
-    };
+    this.response = { data: { message } };
   }
 }

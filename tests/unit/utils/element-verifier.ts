@@ -29,7 +29,9 @@ interface Child {
 
 class ElementVerifier {
   private wrapper: any;
+
   private elements: Elements = {};
+
   private children: Children = {};
 
   constructor({ wrapper, elements, children }: ConstructorArgs) {

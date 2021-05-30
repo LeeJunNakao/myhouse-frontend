@@ -5,12 +5,8 @@
 </template>
 
 <script>
-export default {
-  name: 'Title',
-  props: {
-    text: String,
-  },
-};
+export default { name: 'Title',
+  props: { text: String } };
 </script>
 
 <style scoped>

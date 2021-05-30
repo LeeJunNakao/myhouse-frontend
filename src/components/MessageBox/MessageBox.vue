@@ -5,12 +5,8 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'MessageBox',
-  props: {
-    text: String,
-  },
-};
+export default { name: 'MessageBox',
+  props: { text: String } };
 </script>
 
 <style lang="scss" scoped>

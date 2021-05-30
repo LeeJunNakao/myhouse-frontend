@@ -3,23 +3,36 @@
     <Page>
       <Panel>
         <UserInfo />
-        <UserHouses @handleSelect="handleSelect" />
-        <Buttons :setShowForm="setShowForm" :showForm="showForm" :selectedHouse="selectedHouse" />
-        <Form :showForm="showForm" />
+        <UserHouses :selectDisabled="selectDisabled" />
+        <Buttons
+          :setShowForm="setShowForm"
+          :showForm="showForm"
+          :selectedHouse="selectedHouse"
+          @changeEditMode="setIsEditing"
+          @changeCreateMode="setFormData"
+        />
+        <Form :showForm="showForm" :name="name" :setName="setName" :buttonText="buttonText" />
       </Panel>
     </Page>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
+import { ref, onMounted, watch, computed } from 'vue';
 import { Data } from '@/protocols/composition';
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
+import FormHandler from '@/functions/houses';
 import UserInfo from './components/UserInfo.vue';
 import UserHouses from './components/UserHouses.vue';
 import Buttons from './components/Buttons.vue';
 import Form from './components/Form.vue';
+
+interface Option {
+  id: number;
+  label: string;
+}
 
 export default {
   name: 'Home',
@@ -32,32 +45,57 @@ export default {
     Form,
   },
   setup(): Data {
+    const store = useStore();
+    const formHandler = new FormHandler(store);
     const showForm = ref(false);
-    const selectedHouse = ref(null);
+    const selectDisabled = ref(false);
+    const isEditing = ref(false);
+    const selectedHouse = computed((): Option => formHandler.getSelectedHouse());
+    const name = ref('');
+
+    const setName = (n: string) => {
+      name.value = n;
+    };
 
     const setShowForm = (show: boolean) => {
       showForm.value = show;
     };
 
-    const handleSelect = (value: any) => {
-      selectedHouse.value = value;
+    const setFormData = (mode: boolean) => {
+      if (mode) {
+        name.value = selectedHouse.value?.label || '';
+        selectDisabled.value = true;
+      } else {
+        name.value = '';
+        selectDisabled.value = false;
+      }
+    };
+    const setIsEditing = (editing: boolean) => {
+      isEditing.value = editing;
+      setFormData(editing);
     };
 
+    const buttonText = computed(() => {
+      if (isEditing.value) return 'Editar';
+      return 'Salvar';
+    });
+
     onMounted(() => {
-      watch(
-        selectedHouse,
-        (s) => {
-          console.log('watch', s);
-        },
-        { immediate: true },
-      );
+      watch(selectedHouse, (house) => {
+        if (!house) setName('');
+      });
     });
 
     return {
       setShowForm,
       showForm,
-      handleSelect,
       selectedHouse,
+      setName,
+      name,
+      selectDisabled,
+      setIsEditing,
+      setFormData,
+      buttonText,
     };
   },
 };

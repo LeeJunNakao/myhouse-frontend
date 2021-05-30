@@ -12,22 +12,14 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Input',
-  props: {
-    label: String,
+export default { name: 'Input',
+  props: { label: String,
     placeholder: String,
     type: String,
-    value: {
-      required: true,
-      type: String,
-    },
-    setValue: {
-      required: true,
-      type: Function,
-    },
-  },
-};
+    value: { required: true,
+      type: String },
+    setValue: { required: true,
+      type: Function } } };
 </script>
 
 <style lang="scss" scoped>

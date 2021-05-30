@@ -17,15 +17,8 @@ import Wrapper from '@/components/Layout/Wrapper.vue';
 
 export default {
   name: 'Stamp',
-  props: {
-    disabled: Boolean,
-    icon: String,
-    text: String,
-    color: String,
-  },
-  components: {
-    Wrapper,
-  },
+  props: { disabled: Boolean, icon: String, text: String, color: String },
+  components: { Wrapper },
 };
 </script>
 
@@ -71,11 +64,11 @@ export default {
 }
 
 .disabled {
-  background-color: #dfdfdf !important;
-  border-color: #949494 !important;
+  background-color: $gray !important;
+  border-color: $dark-gray !important;
   span,
   label {
-    color: #949494 !important;
+    color: $dark-gray !important;
   }
 }
 </style>

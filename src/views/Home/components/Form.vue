@@ -3,14 +3,13 @@
     <Wrapper class="form-wrapper" justify="center" v-show="showForm">
       <Input placeholder="Nome da casa" :value="name" :setValue="(n) => setName(n)" />
       <Wrapper justify="center">
-        <Button text="Salvar" :handleClick="() => {}" />
+        <Button :text="buttonText" :handleClick="() => {}" />
       </Wrapper>
     </Wrapper>
   </transition>
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import Input from '@/components/Inputs/Input.vue';
 import Button from '@/components/Button/Button.vue';
@@ -19,22 +18,11 @@ export default {
   name: 'Form',
   props: {
     showForm: Boolean,
+    name: String,
+    buttonText: String,
+    setName: Function,
   },
-  setup(props) {
-    const showForm = ref(props.showForm);
-    const name = ref('');
-
-    const setName = (n: string) => {
-      name.value = n;
-    };
-
-    return { name, setName };
-  },
-  components: {
-    Wrapper,
-    Input,
-    Button,
-  },
+  components: { Wrapper, Input, Button },
 };
 </script>
 

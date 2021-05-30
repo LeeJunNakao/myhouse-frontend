@@ -1,12 +1,10 @@
 import { authService } from '../config';
-import {
-  LoginRequest,
+import { LoginRequest,
   TokenResponse,
   RegisterRequest,
   TokenRequest,
   UserInfo,
-  RecoverPasswordResponse,
-} from './protocols';
+  RecoverPasswordResponse } from './protocols';
 
 const { post } = authService;
 

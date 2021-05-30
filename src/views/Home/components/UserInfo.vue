@@ -26,9 +26,7 @@ import Wrapper from '@/components/Layout/Wrapper.vue';
 
 export default {
   name: 'UserInfo',
-  components: {
-    Wrapper,
-  },
+  components: { Wrapper },
   setup() {
     const store = useStore();
     const showInfo = ref(false);
@@ -57,17 +55,7 @@ export default {
       }
     };
 
-    const beforeEnter = () => {
-      console.log('beforeEnter');
-    };
-
-    return {
-      userData,
-      showInfo,
-      changeShowInfo,
-      userIcon,
-      beforeEnter,
-    };
+    return { userData, showInfo, changeShowInfo, userIcon };
   },
 };
 </script>

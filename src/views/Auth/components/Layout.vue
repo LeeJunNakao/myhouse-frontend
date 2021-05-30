@@ -21,32 +21,18 @@ import Page from '@/components/Page';
 import Title from '@/components/Layout/Title.vue';
 import Button from '@/components/Button/Button.vue';
 
-export default {
-  name: 'Layout',
-  props: {
-    buttonText: {
-      required: true,
-      type: String,
-    },
-    footerPath: {
-      required: true,
-      type: String,
-    },
-    footerText: {
-      required: true,
-      type: String,
-    },
-    handleSubmit: {
-      required: true,
-      type: Function,
-    },
-  },
-  components: {
-    Page,
+export default { name: 'Layout',
+  props: { buttonText: { required: true,
+    type: String },
+  footerPath: { required: true,
+    type: String },
+  footerText: { required: true,
+    type: String },
+  handleSubmit: { required: true,
+    type: Function } },
+  components: { Page,
     Title,
-    Button,
-  },
-};
+    Button } };
 </script>
 
 <style lang="scss" scoped>

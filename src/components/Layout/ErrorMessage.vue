@@ -5,15 +5,9 @@
 </template>
 
 <script>
-export default {
-  name: 'ErrorMessage',
-  props: {
-    message: {
-      required: true,
-      type: String,
-    },
-  },
-};
+export default { name: 'ErrorMessage',
+  props: { message: { required: true,
+    type: String } } };
 </script>
 
 <style lang="scss" scoped>

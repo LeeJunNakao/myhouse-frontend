@@ -3,29 +3,25 @@ import flushPromises from 'flush-promises';
 import RegisterView from '@/views/Auth/Register.vue';
 import errorMessages from '@/functions/validators/form-validator/error-messages';
 import * as authService from '@/services/auth';
-import {
-  ElementVerifier,
+import { ElementVerifier,
   FormErrorVerifier,
   DomHandler,
   ServiceMocker,
   ResponseError,
-  mount
-} from '../utils';
+  mount } from '../utils';
 
 describe('Login', () => {
   it('render the component', () => {
     const wrapper = mount(RegisterView);
 
-    const verifier = new ElementVerifier({
-      wrapper,
+    const verifier = new ElementVerifier({ wrapper,
       elements: ['name', 'email', 'password', 'repeat-password'],
       children: [
         { parentName: 'name', type: 'input' },
         { parentName: 'email', type: 'input' },
         { parentName: 'password', type: 'input' },
         { parentName: 'repeat-password', type: 'input' },
-      ],
-    });
+      ] });
     verifier.verifyElements([
       { name: 'name', content: 'Nome' },
       { name: 'email', content: 'Email' },
@@ -55,10 +51,8 @@ describe('Login', () => {
 
     await nextTick();
 
-    const elementVerifier = new ElementVerifier({
-      wrapper,
-      elements: ['name-error', 'email-error', 'password-error', 'repeat-password-error'],
-    });
+    const elementVerifier = new ElementVerifier({ wrapper,
+      elements: ['name-error', 'email-error', 'password-error', 'repeat-password-error'] });
 
     elementVerifier.verifyElements([
       { name: 'name-error', content: errorMessages.required },

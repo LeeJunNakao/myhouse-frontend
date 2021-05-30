@@ -3,10 +3,12 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 
-const user = { namespaced: true,
+const houses = {
+  namespaced: true,
   state,
   mutations,
   actions,
-  getters };
+  getters,
+};
 
-export default user;
+export default houses;

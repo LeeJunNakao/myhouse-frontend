@@ -15,8 +15,7 @@ import { Data } from '@/protocols/composition';
 import Loading from '@/components/Loading/Loading.vue';
 import * as authService from '@/services/auth';
 
-export default {
-  name: 'Home',
+export default { name: 'Home',
   setup(): Data {
     const store = useStore();
     const router = useRouter();
@@ -67,10 +66,7 @@ export default {
 
     return { isAuthenticated, isLoading };
   },
-  components: {
-    Loading,
-  },
-};
+  components: { Loading } };
 </script>
 
 <style lang="scss">
