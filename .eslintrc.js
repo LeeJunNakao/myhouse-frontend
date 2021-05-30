@@ -15,6 +15,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'import/prefer-default-export': 'off',
     'operator-linebreak': 'off',
+    'object-curly-newline': ["error", "never"],
   },
   overrides: [
     {

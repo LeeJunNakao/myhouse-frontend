@@ -1,5 +1,10 @@
 <template>
-  <Wrapper direction="column" align="center" class="stamp-wrapper text-not-select">
+  <Wrapper
+    direction="column"
+    align="center"
+    class="stamp-wrapper text-not-select"
+    :class="{ disabled }"
+  >
     <span :class="color" class="material-icons icon">
       {{ icon }}
     </span>
@@ -13,6 +18,7 @@ import Wrapper from '@/components/Layout/Wrapper.vue';
 export default {
   name: 'Stamp',
   props: {
+    disabled: Boolean,
     icon: String,
     text: String,
     color: String,
@@ -31,6 +37,8 @@ export default {
   border-radius: $border-radius;
   border: $border-width solid $dark-blue;
   padding: 1rem;
+  width: 7rem;
+  height: 7rem;
 
   span {
     font-size: 3rem;
@@ -59,6 +67,15 @@ export default {
     label {
       color: $dark-blue;
     }
+  }
+}
+
+.disabled {
+  background-color: #dfdfdf !important;
+  border-color: #949494 !important;
+  span,
+  label {
+    color: #949494 !important;
   }
 }
 </style>

@@ -135,6 +135,12 @@ export default {
       if (!value) currentOptionIndex.value = 0;
     });
 
+    watch(searchValue, (value) => {
+      if (!value) {
+        handleSelect(null);
+      }
+    });
+
     watch(selectedOption, (option: Option | string) => {
       if (option) {
         searchValue.value = '';
@@ -163,7 +169,7 @@ export default {
 $options-padding: 0.5rem;
 
 .select-wrapper {
-  border: 0.2rem solid $blue;
+  border: $border-width solid $dark-blue;
   border-radius: $border-radius;
   height: 2rem;
   width: 100%;
@@ -184,6 +190,7 @@ $options-padding: 0.5rem;
   top: 10px;
   width: 100%;
   border: 0.15rem solid $dark-blue;
+  z-index: 100;
 }
 
 .option {
@@ -195,6 +202,7 @@ $options-padding: 0.5rem;
   white-space: nowrap;
   background-color: white;
   justify-content: center;
+  z-index: 100;
 
   &:hover {
     cursor: pointer;
@@ -211,6 +219,7 @@ $options-padding: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
 
   &:hover {
     cursor: pointer;

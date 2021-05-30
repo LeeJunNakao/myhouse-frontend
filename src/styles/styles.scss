@@ -54,6 +54,10 @@ input {
   display: none;
 }
 
+.opacity-0 {
+  opacity: 0;
+}
+
 .upside-down {
   transform: rotate(180deg);
 }
@@ -68,4 +72,20 @@ input {
 
 .color-dark-blue {
   color: $dark-blue;
+}
+
+.transition-ease {
+  transition: visibility 0.5s ease;
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
 }

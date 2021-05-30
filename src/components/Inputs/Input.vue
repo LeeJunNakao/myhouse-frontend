@@ -1,11 +1,12 @@
 <template>
   <div name="input" class="input-wrapper">
-    <label>{{ label }}</label>
+    <label v-if="label">{{ label }}</label>
     <input
       :value="value"
       @input="setValue($event.target.value)"
       :type="type || 'text'"
       data-test="input"
+      :placeholder="placeholder"
     />
   </div>
 </template>
@@ -15,6 +16,8 @@ export default {
   name: 'Input',
   props: {
     label: String,
+    placeholder: String,
+    type: String,
     value: {
       required: true,
       type: String,
@@ -23,7 +26,6 @@ export default {
       required: true,
       type: Function,
     },
-    type: String,
   },
 };
 </script>
@@ -33,9 +35,10 @@ export default {
   display: grid;
   grid-template-columns: 4rem 1fr;
   input {
-    border: 0.15rem solid #126e82;
+    border: $border-width solid $dark-blue;
     border-radius: $border-radius;
     height: 1.5rem;
+    padding-left: .5rem;
 
     &:focus {
       outline: none;
