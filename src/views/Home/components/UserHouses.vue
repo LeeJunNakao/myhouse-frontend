@@ -12,17 +12,13 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { Select } from '@/components/Inputs';
 import { Data, SetupContext } from '@/protocols/composition';
 import MessageBox from '@/components/MessageBox/MessageBox.vue';
-import FormHandler from '@/functions/houses';
-
-const OPTIONS: any[] = [
-  { id: 1, label: 'Casa A' },
-  { id: 1, label: 'Casa B' },
-];
+import { FormHandler } from '@/functions/houses';
+import { House } from '@/protocols/domain/House';
 
 export default {
   name: 'UserHouses',
@@ -33,7 +29,10 @@ export default {
   setup(props: Data, { emit }: SetupContext): Data {
     const store = useStore();
     const formHandler = new FormHandler(store);
-    const options = ref(OPTIONS);
+    const options = computed(() => {
+      const houses = formHandler.getHouses();
+      return houses.map((h: House) => ({ ...h, label: h.name }));
+    });
 
     const handleSelect = (house: any) => {
       formHandler.selectHouse(house);

@@ -1,9 +1,15 @@
 import { Commit } from 'vuex';
-import StateType from './protocols';
+import { StateType, House } from './protocols';
 
 const actions = {
   setHouses({ commit }: { commit: Commit }, houses: StateType['houses']): void {
     commit('setHouses', houses);
+  },
+  insertHouse({ commit }: { commit: Commit }, house: House): void {
+    commit('insertHouse', house);
+  },
+  updateHouse({ commit }: { commit: Commit }, house: House): void {
+    commit('updateHouse', house);
   },
   selectHouse({ commit }: { commit: Commit }, house: StateType['selectedHouse']): void {
     commit('selectHouse', house);

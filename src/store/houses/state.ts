@@ -1,4 +1,4 @@
-import StateType from './protocols';
+import { StateType } from './protocols';
 
 const state = (): StateType => ({
   houses: [],

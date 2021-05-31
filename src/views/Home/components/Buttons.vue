@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts">
-import { ref, toRefs, computed, onMounted, watch } from 'vue';
+import { ref, toRefs, computed, onMounted, watch, inject } from 'vue';
 import { useStore } from 'vuex';
 import { Data, SetupContext } from '@/protocols/composition';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import Stamp from '@/components/Button/Stamp.vue';
-import FormHandler from '@/functions/houses';
+import { FormHandler } from '@/functions/houses';
 
 export default {
   name: 'Buttons',
@@ -35,9 +35,8 @@ export default {
     selectedHouse: Object,
   },
   setup(props: Data, { emit }: SetupContext): Data {
-    const store = useStore();
-    const formHandler = new FormHandler(store);
-    const house = computed(() => formHandler.getSelectedHouse());
+    const formHandler: FormHandler | undefined = inject('formHandler');
+    const house = computed(() => formHandler?.getSelectedHouse());
     const newHouseMode = ref(false);
     const editMode = ref(false);
     const { showForm } = toRefs(props);
@@ -55,6 +54,7 @@ export default {
       editMode.value = false;
       newHouseMode.value = false;
     };
+    if (formHandler) formHandler.handleBack = handleBack;
 
     const config = computed(() => {
       const newHouse = {

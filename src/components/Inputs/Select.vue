@@ -84,7 +84,7 @@ export default {
     const expand = ref(false);
     const currentOptionIndex = ref(0);
     const optionsSizeToDisplay = 4;
-    const options = ref(props.options);
+    const options = computed(() => props.options);
     const selectedOption = ref('');
     const shouldSearch = ref(false);
     const { disabled } = toRefs(props);

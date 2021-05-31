@@ -3,16 +3,20 @@
     <Wrapper class="form-wrapper" justify="center" v-show="showForm">
       <Input placeholder="Nome da casa" :value="name" :setValue="(n) => setName(n)" />
       <Wrapper justify="center">
-        <Button :text="buttonText" :handleClick="() => {}" />
+        <Button :text="buttonText" :handleClick="handleSubmit" />
       </Wrapper>
     </Wrapper>
   </transition>
 </template>
 
 <script lang="ts">
+import { useStore } from 'vuex';
+import { inject, computed } from 'vue';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import Input from '@/components/Inputs/Input.vue';
 import Button from '@/components/Button/Button.vue';
+import { Data, Ref } from '@/protocols/composition';
+import { FormHandler, ServiceHandler } from '@/functions/houses';
 
 export default {
   name: 'Form',
@@ -23,6 +27,22 @@ export default {
     setName: Function,
   },
   components: { Wrapper, Input, Button },
+  setup(props: Data): Data {
+    const store = useStore();
+    const serviceHandler = new ServiceHandler(store);
+    const formHandler: FormHandler | undefined = inject('formHandler');
+    const name = computed(() => props.name);
+    const isEditing: Ref<boolean> | undefined = inject('isEditing');
+
+    const handleSubmit = () => {
+      if (!isEditing?.value) {
+        serviceHandler.createHouse(name.value);
+        if (formHandler?.handleBack) formHandler.handleBack();
+      }
+    };
+
+    return { handleSubmit };
+  },
 };
 </script>
 

@@ -4,7 +4,7 @@ const { post, get, put, del } = service;
 
 interface HouseRequest {
   name: string;
-  members: number[];
+  members?: number[];
 }
 
 export const createHouse = async (data: HouseRequest) => {

@@ -1,14 +1,11 @@
-interface House {
-  id: number;
-  name: string;
-}
+import { House } from '@/protocols/domain/House';
 
 interface StateType {
   houses: House[];
   selectedHouse: House | null;
   formData: {
-    name: string;
+    name: House['name'];
   };
 }
 
-export default StateType;
+export { House, StateType };

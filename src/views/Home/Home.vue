@@ -19,11 +19,11 @@
 
 <script lang="ts">
 import { useStore } from 'vuex';
-import { ref, onMounted, watch, computed } from 'vue';
+import { ref, onMounted, watch, computed, provide } from 'vue';
 import { Data } from '@/protocols/composition';
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
-import FormHandler from '@/functions/houses';
+import { FormHandler, ServiceHandler } from '@/functions/houses';
 import UserInfo from './components/UserInfo.vue';
 import UserHouses from './components/UserHouses.vue';
 import Buttons from './components/Buttons.vue';
@@ -47,6 +47,7 @@ export default {
   setup(): Data {
     const store = useStore();
     const formHandler = new FormHandler(store);
+    const serviceHandler = new ServiceHandler(store);
     const showForm = ref(false);
     const selectDisabled = ref(false);
     const isEditing = ref(false);
@@ -84,8 +85,12 @@ export default {
       watch(selectedHouse, (house) => {
         if (!house) setName('');
       });
+
+      serviceHandler.getHouses();
     });
 
+    provide('isEditing', isEditing);
+    provide('formHandler', formHandler);
     return {
       setShowForm,
       showForm,
