@@ -1,7 +1,13 @@
 <template>
   <transition name="form">
     <Wrapper class="form-wrapper" justify="center" v-show="showForm">
-      <Input placeholder="Nome da casa" :value="name" :setValue="(n) => setName(n)" />
+      <Input placeholder="Nome da casa" :value="name" :setValue="(n) => setName(n)">
+        <template v-slot:icon v-if="isEditing">
+          <span class="material-icons icon" @click="handleDelete">
+            delete
+          </span>
+        </template>
+      </Input>
       <Wrapper justify="center">
         <Button :text="buttonText" :handleClick="handleSubmit" />
       </Wrapper>
@@ -34,14 +40,24 @@ export default {
     const name = computed(() => props.name);
     const isEditing: Ref<boolean> | undefined = inject('isEditing');
 
+    const goBack = (): void => {
+      if (formHandler?.handleBack) formHandler.handleBack();
+    };
+
     const handleSubmit = () => {
       if (!isEditing?.value) {
         serviceHandler.createHouse(name.value);
-        if (formHandler?.handleBack) formHandler.handleBack();
+        goBack();
       }
     };
 
-    return { handleSubmit };
+    const handleDelete = async () => {
+      await serviceHandler.deleteHouse();
+      if (formHandler?.clearSelect) formHandler.clearSelect();
+      goBack();
+    };
+
+    return { handleSubmit, isEditing, handleDelete };
   },
 };
 </script>
@@ -73,5 +89,14 @@ export default {
 
 .form-leave-active {
   animation: disappear 0.5s;
+}
+
+.icon {
+  font-size: 1rem;
+  color: $dark-blue;
+
+  &:active {
+    color: $blue;
+  }
 }
 </style>

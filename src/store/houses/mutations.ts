@@ -11,6 +11,10 @@ const mutations = {
     const index = state.houses.findIndex((h) => Number(h.id) === Number(house.id));
     if (index) state.houses.splice(index, 1, house);
   },
+  deleteHouse(state: StateType, houseId: number) {
+    const index = state.houses.findIndex((h) => Number(h.id) === Number(houseId));
+    if (index > -1) state.houses.splice(index, 1);
+  },
   selectHouse(state: StateType, selectedHouse: StateType['selectedHouse']): void {
     state.selectedHouse = selectedHouse;
   },

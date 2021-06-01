@@ -4,6 +4,8 @@ import StorageManager from '../StorageManager';
 export class FormHandler extends StorageManager {
   handleBack?: () => void;
 
+  clearSelect?: () => void;
+
   selectHouse(house: StateType['selectedHouse']) {
     this.store.dispatch('houses/selectHouse', house);
   }

@@ -11,6 +11,9 @@ const actions = {
   updateHouse({ commit }: { commit: Commit }, house: House): void {
     commit('updateHouse', house);
   },
+  deleteHouse({ commit }: { commit: Commit }, houseId: number): void {
+    commit('deleteHouse', houseId);
+  },
   selectHouse({ commit }: { commit: Commit }, house: StateType['selectedHouse']): void {
     commit('selectHouse', house);
   },

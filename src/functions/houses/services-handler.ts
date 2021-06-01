@@ -15,6 +15,13 @@ export class ServiceHandler extends StorageManager {
 
   async updateHouse(house: House) {
     const response = await houseService.updateHouse(house.id, house);
-    this.store.dispatch('house/updateHouse', response);
+    this.store.dispatch('houses/updateHouse', response);
+  }
+
+  async deleteHouse() {
+    const { id } = this.store.getters['houses/getSelectedHouse'];
+    await houseService.deleteHouse(id);
+    this.store.dispatch('houses/deleteHouse', id);
+    this.store.dispatch('houses/selectHouse', null);
   }
 }

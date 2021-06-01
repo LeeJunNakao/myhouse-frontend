@@ -6,13 +6,14 @@
       :options="options"
       :disabled="selectDisabled"
       @handleSelect="handleSelect"
+      ref="selectInput"
     />
     <MessageBox v-else text="Não há nenhuma casa cadastrada" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, ref, watch, inject } from 'vue';
 import { useStore } from 'vuex';
 import { Select } from '@/components/Inputs';
 import { Data, SetupContext } from '@/protocols/composition';
@@ -27,18 +28,32 @@ export default {
   },
   components: { Select, MessageBox },
   setup(props: Data, { emit }: SetupContext): Data {
-    const store = useStore();
-    const formHandler = new FormHandler(store);
+    const formHandler: FormHandler | undefined = inject('formHandler');
     const options = computed(() => {
-      const houses = formHandler.getHouses();
+      const houses = formHandler?.getHouses() || [];
       return houses.map((h: House) => ({ ...h, label: h.name }));
     });
+    const selectInput = ref<any>(null);
 
     const handleSelect = (house: any) => {
-      formHandler.selectHouse(house);
+      formHandler?.selectHouse(house);
     };
 
-    return { handleSelect, options };
+    onMounted(async () => {
+      watch(
+        selectInput,
+        (input) => {
+          if (input && formHandler) {
+            formHandler.clearSelect = () => {
+              input.searchValue = '';
+            };
+          }
+        },
+        { immediate: true },
+      );
+    });
+
+    return { handleSelect, options, selectInput };
   },
 };
 </script>
