@@ -1,7 +1,12 @@
 <template>
   <transition name="form">
     <Wrapper class="form-wrapper" justify="center" v-show="showForm">
-      <Input placeholder="Nome da casa" :value="name" :setValue="(n) => setName(n)">
+      <Input
+        placeholder="Nome da casa"
+        :value="name"
+        :setValue="(n) => setName(n)"
+        @keypress.enter="handleSubmit"
+      >
         <template v-slot:icon v-if="isEditing">
           <span class="material-icons icon" @click="handleDelete">
             delete

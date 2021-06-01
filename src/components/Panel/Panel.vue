@@ -17,9 +17,10 @@ export default { name: 'Layout',
 <style lang="scss" scoped>
 .panel {
   padding: 1rem;
+  padding-bottom: 5rem;
   background-color: white;
   border-radius: $border-radius;
-  height: 25rem;
+  min-height: 25rem;
   width: 300px;
 }
 
