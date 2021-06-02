@@ -53,7 +53,7 @@ export default {
       props.setShowForm(false);
       editMode.value = false;
       newHouseMode.value = false;
-      if (formHandler?.clearSelect) formHandler.clearSelect();
+      formHandler?.selectHouse(null);
     };
     if (formHandler) formHandler.handleBack = handleBack;
 

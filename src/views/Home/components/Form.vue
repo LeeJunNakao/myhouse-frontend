@@ -42,23 +42,28 @@ export default {
     const store = useStore();
     const serviceHandler = new ServiceHandler(store);
     const formHandler: FormHandler | undefined = inject('formHandler');
-    const name = computed(() => props.name);
+    const name = computed<string>(() => props.name);
     const isEditing: Ref<boolean> | undefined = inject('isEditing');
 
     const goBack = (): void => {
       if (formHandler?.handleBack) formHandler.handleBack();
     };
 
-    const handleSubmit = () => {
-      if (!isEditing?.value) {
-        serviceHandler.createHouse(name.value);
-        goBack();
-      }
+    const handleSubmit = async () => {
+      const selectedHouse = formHandler?.getSelectedHouse();
+      const house =
+        isEditing?.value && selectedHouse
+          ? await serviceHandler.updateHouse({
+            ...selectedHouse,
+            name: name.value,
+          })
+          : await serviceHandler.createHouse(name.value);
+      goBack();
+      if (house) formHandler?.selectHouse(house);
     };
 
     const handleDelete = async () => {
       await serviceHandler.deleteHouse();
-      if (formHandler?.clearSelect) formHandler.clearSelect();
       goBack();
     };
 

@@ -5,6 +5,10 @@ const state = (): StateType => ({
   selectedHouse: null,
   formData: {
     name: '',
+    responseMessage: {
+      type: '',
+      message: '',
+    },
   },
 });
 

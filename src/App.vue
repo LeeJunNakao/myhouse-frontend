@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { watch, computed, ref } from 'vue';
+import { watch, computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import AuthStore from '@/functions/auth';
@@ -14,10 +14,13 @@ import UserStore from '@/functions/user';
 import { Data } from '@/protocols/composition';
 import Loading from '@/components/Loading/Loading.vue';
 import * as authService from '@/services/auth';
+import { ServiceHandler } from '@/functions/houses';
 
-export default { name: 'Home',
+export default {
+  name: 'Home',
   setup(): Data {
     const store = useStore();
+    const serviceHandler = new ServiceHandler(store);
     const router = useRouter();
     const route = useRoute();
     const auth = new AuthStore(store);
@@ -64,9 +67,14 @@ export default { name: 'Home',
 
     watch(accessToken, validateToken, { immediate: true });
 
+    onMounted(() => {
+      serviceHandler.getHouses();
+    });
+
     return { isAuthenticated, isLoading };
   },
-  components: { Loading } };
+  components: { Loading },
+};
 </script>
 
 <style lang="scss">

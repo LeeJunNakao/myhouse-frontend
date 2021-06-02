@@ -12,6 +12,11 @@
           @changeCreateMode="setFormData"
         />
         <Form :showForm="showForm" :name="name" :setName="setName" :buttonText="buttonText" />
+        <MessageBox
+          v-if="responseMessage.message"
+          :text="responseMessage.message"
+          :error="responseMessage.type === 'error'"
+        />
       </Panel>
     </Page>
   </div>
@@ -28,11 +33,7 @@ import UserInfo from './components/UserInfo.vue';
 import UserHouses from './components/UserHouses.vue';
 import Buttons from './components/Buttons.vue';
 import Form from './components/Form.vue';
-
-interface Option {
-  id: number;
-  label: string;
-}
+import MessageBox from '@/components/MessageBox/MessageBox.vue';
 
 export default {
   name: 'Home',
@@ -43,16 +44,20 @@ export default {
     UserHouses,
     Buttons,
     Form,
+    MessageBox,
   },
   setup(): Data {
     const store = useStore();
     const formHandler = new FormHandler(store);
-    const serviceHandler = new ServiceHandler(store);
     const showForm = ref(false);
     const selectDisabled = ref(false);
     const isEditing = ref(false);
-    const selectedHouse = computed((): Option => formHandler.getSelectedHouse());
     const name = ref('');
+    const selectedHouse = computed(() => {
+      const house = formHandler.getSelectedHouse();
+      return { ...house, label: house?.name };
+    });
+    const responseMessage = computed(() => formHandler.getResponseMessage());
 
     const setName = (n: string) => {
       name.value = n;
@@ -85,8 +90,6 @@ export default {
       watch(selectedHouse, (house) => {
         if (!house) setName('');
       });
-
-      serviceHandler.getHouses();
     });
 
     provide('isEditing', isEditing);
@@ -101,6 +104,7 @@ export default {
       setIsEditing,
       setFormData,
       buttonText,
+      responseMessage,
     };
   },
 };

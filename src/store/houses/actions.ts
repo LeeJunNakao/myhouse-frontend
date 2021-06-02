@@ -20,6 +20,12 @@ const actions = {
   setFormDataName({ commit }: { commit: Commit }, name: StateType['formData']['name']): void {
     commit('setFormDataName', name);
   },
+  setFormDataResponseMessage(
+    { commit }: { commit: Commit },
+    responseMessage: StateType['formData']['responseMessage'],
+  ): void {
+    commit('setFormDataResponseMessage', responseMessage);
+  },
 };
 
 export default actions;

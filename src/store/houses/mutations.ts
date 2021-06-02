@@ -9,7 +9,8 @@ const mutations = {
   },
   updateHouse(state: StateType, house: House) {
     const index = state.houses.findIndex((h) => Number(h.id) === Number(house.id));
-    if (index) state.houses.splice(index, 1, house);
+    if (index > -1) state.houses.splice(index, 1, house);
+    console.log('update House', index);
   },
   deleteHouse(state: StateType, houseId: number) {
     const index = state.houses.findIndex((h) => Number(h.id) === Number(houseId));
@@ -20,6 +21,12 @@ const mutations = {
   },
   setFormDataName(state: StateType, name: StateType['formData']['name']): void {
     state.formData.name = name;
+  },
+  setFormDataResponseMessage(
+    state: StateType,
+    responseMessage: StateType['formData']['responseMessage'],
+  ): void {
+    state.formData.responseMessage = responseMessage;
   },
 };
 

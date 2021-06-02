@@ -14,7 +14,6 @@
 
 <script lang="ts">
 import { computed, onMounted, ref, watch, inject } from 'vue';
-import { useStore } from 'vuex';
 import { Select } from '@/components/Inputs';
 import { Data, SetupContext } from '@/protocols/composition';
 import MessageBox from '@/components/MessageBox/MessageBox.vue';
@@ -34,6 +33,7 @@ export default {
       return houses.map((h: House) => ({ ...h, label: h.name }));
     });
     const selectInput = ref<any>(null);
+    const selectedHouse = computed(() => formHandler?.getSelectedHouse());
 
     const handleSelect = (house: any) => {
       formHandler?.selectHouse(house);
@@ -41,15 +41,13 @@ export default {
 
     onMounted(async () => {
       watch(
-        selectInput,
-        (input) => {
-          if (input && formHandler) {
-            formHandler.clearSelect = () => {
-              input.searchValue = '';
-            };
+        selectedHouse,
+        (house) => {
+          if (selectInput.value) {
+            selectInput.value.searchValue = house?.name || '';
           }
         },
-        { immediate: true },
+        { immediate: true, deep: true },
       );
     });
 
