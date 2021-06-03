@@ -1,6 +1,6 @@
 <template>
   <Wrapper direction="column" class="select-wrapper" :class="{ disabled }">
-    <Wrapper full>
+    <Wrapper full justify="space-between" class="input-wrapper">
       <input
         v-model="searchValue"
         @focus="expand = true"
@@ -254,5 +254,10 @@ $options-padding: 0.5rem;
     background: $gray;
     color: $dark-gray;
   }
+}
+
+.input-wrapper {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 </style>

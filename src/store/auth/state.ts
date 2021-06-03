@@ -1,7 +1,7 @@
-import StateType from './protocols';
+import State from './protocols';
 
-const state = (): StateType => ({ authenticated: false,
+const state = (): State => ({ authenticated: false,
   token: localStorage.getItem('token') });
 
-export { StateType };
+export { State };
 export default state;

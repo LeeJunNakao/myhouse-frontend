@@ -49,11 +49,11 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { setAttribute as setter } from '@/functions/setter';
+import { setAttribute as setter } from '@/composition/setter';
 import { useStore } from 'vuex';
-import Auth from '@/functions/auth';
+import Auth from '@/composition/auth';
 import * as authService from '@/services/auth';
-import FormValidator from '@/functions/validators/form-validator';
+import FormValidator from '@/composition/validators/form-validator';
 import Loading from '@/components/Loading/Loading.vue';
 import { Input } from '@/components/Inputs';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';

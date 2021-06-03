@@ -1,7 +1,7 @@
 import { nextTick } from 'vue';
 import flushPromises from 'flush-promises';
 import RegisterView from '@/views/Auth/Register.vue';
-import errorMessages from '@/functions/validators/form-validator/error-messages';
+import errorMessages from '@/composition/validators/form-validator/error-messages';
 import * as authService from '@/services/auth';
 import { ElementVerifier,
   FormErrorVerifier,

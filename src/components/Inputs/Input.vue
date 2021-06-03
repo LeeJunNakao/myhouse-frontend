@@ -1,7 +1,7 @@
 <template>
-  <div name="input" class="input-wrapper">
+  <div class="input-wrapper" :class="{ 'no-label': !label }">
     <label v-if="label">{{ label }}</label>
-    <Wrapper justify="space-between" class="wrapper">
+    <Wrapper justify="space-between" class="wrapper" full>
       <input
         :value="value"
         @input="setValue($event.target.value)"
@@ -36,6 +36,10 @@ export default {
 .input-wrapper {
   display: grid;
   grid-template-columns: 4rem 1fr;
+  height: 2.5rem;
+  overflow: hidden;
+  width: 100%;
+
   .wrapper {
     border: $border-width solid $dark-blue;
     border-radius: $border-radius;
@@ -45,6 +49,8 @@ export default {
 
     input {
       border: none;
+      background-color: transparent;
+      width: 100%;
 
       &:focus {
         outline: none;
@@ -58,5 +64,9 @@ export default {
     justify-content: flex-start;
     align-items: center;
   }
+}
+
+.no-label {
+  grid-template-columns: 1fr;
 }
 </style>

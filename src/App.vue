@@ -9,12 +9,12 @@
 import { watch, computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
-import AuthStore from '@/functions/auth';
-import UserStore from '@/functions/user';
+import AuthStore from '@/composition/auth';
+import UserStore from '@/composition/user';
 import { Data } from '@/protocols/composition';
 import Loading from '@/components/Loading/Loading.vue';
 import * as authService from '@/services/auth';
-import { ServiceHandler } from '@/functions/houses';
+import { ServiceHandler } from '@/composition/houses';
 
 export default {
   name: 'Home',

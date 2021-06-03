@@ -1,6 +1,6 @@
 import { nextTick } from 'vue';
 import LoginView from '@/views/Auth/Login.vue';
-import errorMessages from '@/functions/validators/form-validator/error-messages';
+import errorMessages from '@/composition/validators/form-validator/error-messages';
 import * as authService from '@/services/auth';
 import { DomHandler, ElementVerifier, ServiceMocker, mount } from '../utils';
 

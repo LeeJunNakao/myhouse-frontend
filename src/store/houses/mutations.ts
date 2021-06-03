@@ -1,30 +1,30 @@
-import { StateType, House } from './protocols';
+import { State, House } from './protocols';
 
 const mutations = {
-  setHouses(state: StateType, houses: StateType['houses']): void {
+  setHouses(state: State, houses: State['houses']): void {
     state.houses = houses;
   },
-  insertHouse(state: StateType, house: House) {
+  insertHouse(state: State, house: House) {
     state.houses.push(house);
   },
-  updateHouse(state: StateType, house: House) {
+  updateHouse(state: State, house: House) {
     const index = state.houses.findIndex((h) => Number(h.id) === Number(house.id));
     if (index > -1) state.houses.splice(index, 1, house);
     console.log('update House', index);
   },
-  deleteHouse(state: StateType, houseId: number) {
+  deleteHouse(state: State, houseId: number) {
     const index = state.houses.findIndex((h) => Number(h.id) === Number(houseId));
     if (index > -1) state.houses.splice(index, 1);
   },
-  selectHouse(state: StateType, selectedHouse: StateType['selectedHouse']): void {
+  selectHouse(state: State, selectedHouse: State['selectedHouse']): void {
     state.selectedHouse = selectedHouse;
   },
-  setFormDataName(state: StateType, name: StateType['formData']['name']): void {
+  setFormDataName(state: State, name: State['formData']['name']): void {
     state.formData.name = name;
   },
   setFormDataResponseMessage(
-    state: StateType,
-    responseMessage: StateType['formData']['responseMessage'],
+    state: State,
+    responseMessage: State['formData']['responseMessage'],
   ): void {
     state.formData.responseMessage = responseMessage;
   },

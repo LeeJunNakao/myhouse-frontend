@@ -3,7 +3,7 @@
     <Page>
       <Panel>
         <UserInfo />
-        <UserHouses :selectDisabled="selectDisabled" />
+        <Houses :selectDisabled="selectDisabled" />
         <Buttons
           :setShowForm="setShowForm"
           :showForm="showForm"
@@ -25,15 +25,15 @@
 <script lang="ts">
 import { useStore } from 'vuex';
 import { ref, onMounted, watch, computed, provide } from 'vue';
+import MessageBox from '@/components/MessageBox/MessageBox.vue';
 import { Data } from '@/protocols/composition';
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
-import { FormHandler, ServiceHandler } from '@/functions/houses';
-import UserInfo from './components/UserInfo.vue';
-import UserHouses from './components/UserHouses.vue';
+import { FormHandler } from '@/composition/houses';
+import UserInfo from '@/components/UserInfo/UserInfo.vue';
+import Houses from './components/Houses.vue';
 import Buttons from './components/Buttons.vue';
 import Form from './components/Form.vue';
-import MessageBox from '@/components/MessageBox/MessageBox.vue';
 
 export default {
   name: 'Home',
@@ -41,7 +41,7 @@ export default {
     Page,
     Panel,
     UserInfo,
-    UserHouses,
+    Houses,
     Buttons,
     Form,
     MessageBox,
@@ -54,7 +54,7 @@ export default {
     const isEditing = ref(false);
     const name = ref('');
     const selectedHouse = computed(() => {
-      const house = formHandler.getSelectedHouse();
+      const house = formHandler.getSelectedItem();
       return { ...house, label: house?.name };
     });
     const responseMessage = computed(() => formHandler.getResponseMessage());

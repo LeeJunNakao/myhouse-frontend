@@ -1,6 +1,6 @@
 import { nextTick } from 'vue';
 import RecoverPassword from '@/views/Auth/RecoverPassword.vue';
-import errorMessages from '@/functions/validators/form-validator/error-messages';
+import errorMessages from '@/composition/validators/form-validator/error-messages';
 import * as service from '@/services/auth';
 import flushPromises from 'flush-promises';
 import { mount,

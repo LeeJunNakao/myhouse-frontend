@@ -1,6 +1,6 @@
 import { House } from '@/protocols/domain/House';
 
-export interface StateType {
+export interface State {
   houses: House[];
   selectedHouse: House | null;
   formData: {

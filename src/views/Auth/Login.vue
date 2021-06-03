@@ -39,10 +39,10 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { Attribute } from '@/protocols/composition';
-import Auth from '@/functions/auth';
-import { setAttribute as setter } from '@/functions/setter';
-import FormValidator from '@/functions/validators/form-validator';
-import { translateError } from '@/functions/translator';
+import Auth from '@/composition/auth';
+import { setAttribute as setter } from '@/composition/setter';
+import FormValidator from '@/composition/validators/form-validator';
+import { translateError } from '@/composition/translator';
 import * as authService from '@/services/auth';
 import { Input } from '@/components/Inputs';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';

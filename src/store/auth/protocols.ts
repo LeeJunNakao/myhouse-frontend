@@ -1,6 +1,6 @@
-interface StateType {
+interface State {
     authenticated: boolean
     token: string | null,
 }
 
-export default StateType;
+export default State;

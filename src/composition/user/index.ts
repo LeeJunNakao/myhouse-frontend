@@ -1,4 +1,4 @@
-import { StateType as UserState } from '@/store/user/protocols';
+import { State as UserState } from '@/store/user/protocols';
 import StorageManager from '../StorageManager';
 
 class UserStore extends StorageManager {

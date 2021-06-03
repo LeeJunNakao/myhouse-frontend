@@ -27,7 +27,7 @@ import Wrapper from '@/components/Layout/Wrapper.vue';
 import Input from '@/components/Inputs/Input.vue';
 import Button from '@/components/Button/Button.vue';
 import { Data, Ref } from '@/protocols/composition';
-import { FormHandler, ServiceHandler } from '@/functions/houses';
+import { FormHandler, ServiceHandler } from '@/composition/houses';
 
 export default {
   name: 'Form',
@@ -50,7 +50,7 @@ export default {
     };
 
     const handleSubmit = async () => {
-      const selectedHouse = formHandler?.getSelectedHouse();
+      const selectedHouse = formHandler?.getSelectedItem();
       const house =
         isEditing?.value && selectedHouse
           ? await serviceHandler.updateHouse({
@@ -59,7 +59,7 @@ export default {
           })
           : await serviceHandler.createHouse(name.value);
       goBack();
-      if (house) formHandler?.selectHouse(house);
+      if (house) formHandler?.selectItem(house);
     };
 
     const handleDelete = async () => {
@@ -75,7 +75,6 @@ export default {
 <style scoped lang="scss">
 .form-wrapper::v-deep {
   flex-wrap: wrap;
-  width: 100%;
   margin-top: 1rem;
   height: 2.2rem;
   display: grid;

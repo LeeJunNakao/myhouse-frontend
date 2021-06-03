@@ -1,10 +1,12 @@
 import { State } from './protocols';
 
 const state = (): State => ({
-  houses: [],
-  selectedHouse: null,
+  purchases: [],
+  selectedPurchase: null,
   formData: {
-    name: '',
+    date: null,
+    description: '',
+    value: 0,
     responseMessage: {
       type: '',
       message: '',

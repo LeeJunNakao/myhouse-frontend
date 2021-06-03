@@ -1,4 +1,5 @@
-module.exports = { printWidth: 100,
+module.exports = {
+  printWidth: 100,
   tabWidth: 2,
   tabs: false,
   semi: true,
@@ -7,4 +8,5 @@ module.exports = { printWidth: 100,
   trailingComma: 'all',
   bracketSpacing: true,
   jsxBracketSameLine: false,
-  arrowParens: 'always' };
+  arrowParens: 'always',
+};

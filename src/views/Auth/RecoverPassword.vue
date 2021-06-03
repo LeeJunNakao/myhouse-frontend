@@ -23,9 +23,9 @@
 import { ref, computed } from 'vue';
 import { Input } from '@/components/Inputs';
 import * as service from '@/services/auth';
-import { setAttribute as setter } from '@/functions/setter';
+import { setAttribute as setter } from '@/composition/setter';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
-import FormValidator from '@/functions/validators/form-validator';
+import FormValidator from '@/composition/validators/form-validator';
 import Loading from '@/components/Loading/Loading.vue';
 import Layout from './components/Layout.vue';
 

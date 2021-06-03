@@ -17,29 +17,27 @@ import { computed, onMounted, ref, watch, inject } from 'vue';
 import { Select } from '@/components/Inputs';
 import { Data, SetupContext } from '@/protocols/composition';
 import MessageBox from '@/components/MessageBox/MessageBox.vue';
-import { FormHandler } from '@/functions/houses';
+import { FormHandler } from '@/composition/houses';
 import { House } from '@/protocols/domain/House';
+import { getOptions, getSelectedItem, selectItem } from '@/composition/setups/items-list';
 
 export default {
-  name: 'UserHouses',
+  name: 'Houses',
   props: {
     selectDisabled: Boolean,
   },
   components: { Select, MessageBox },
   setup(props: Data, { emit }: SetupContext): Data {
     const formHandler: FormHandler | undefined = inject('formHandler');
-    const options = computed(() => {
-      const houses = formHandler?.getHouses() || [];
-      return houses.map((h: House) => ({ ...h, label: h.name }));
-    });
+    const options = getOptions(formHandler);
+    const selectedHouse = getSelectedItem();
     const selectInput = ref<any>(null);
-    const selectedHouse = computed(() => formHandler?.getSelectedHouse());
 
     const handleSelect = (house: any) => {
-      formHandler?.selectHouse(house);
+      selectItem(house, formHandler);
     };
 
-    onMounted(async () => {
+    onMounted(() => {
       watch(
         selectedHouse,
         (house) => {

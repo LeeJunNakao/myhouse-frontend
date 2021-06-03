@@ -20,11 +20,11 @@
 
 <script lang="ts">
 import { ref, toRefs, computed, onMounted, watch, inject } from 'vue';
-import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { Data, SetupContext } from '@/protocols/composition';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import Stamp from '@/components/Button/Stamp.vue';
-import { FormHandler } from '@/functions/houses';
+import { FormHandler } from '@/composition/houses';
 
 export default {
   name: 'Buttons',
@@ -36,7 +36,8 @@ export default {
   },
   setup(props: Data, { emit }: SetupContext): Data {
     const formHandler: FormHandler | undefined = inject('formHandler');
-    const house = computed(() => formHandler?.getSelectedHouse());
+    const router = useRouter();
+    const house = computed(() => formHandler?.getSelectedItem());
     const newHouseMode = ref(false);
     const editMode = ref(false);
     const { showForm } = toRefs(props);
@@ -53,7 +54,10 @@ export default {
       props.setShowForm(false);
       editMode.value = false;
       newHouseMode.value = false;
-      formHandler?.selectHouse(null);
+      formHandler?.selectItem(null);
+    };
+    const handlePurchase = () => {
+      router.push({ name: 'Purchase' });
     };
     if (formHandler) formHandler.handleBack = handleBack;
 
@@ -79,7 +83,7 @@ export default {
       const purchase = {
         text: 'Compras',
         icon: 'attach_money',
-        handler: handleBack,
+        handler: handlePurchase,
       };
 
       const unselected = {

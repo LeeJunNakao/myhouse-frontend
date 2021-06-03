@@ -1,9 +1,9 @@
-import { StateType } from './protocols';
+import { State } from './protocols';
 
 const getters = {
-  getHouses: (state: StateType): StateType['houses'] => state.houses,
-  getSelectedHouse: (state: StateType): StateType['selectedHouse'] => state.selectedHouse,
-  formData: (state: StateType): StateType['formData'] => state.formData,
+  getHouses: (state: State): State['houses'] => state.houses,
+  getSelectedHouse: (state: State): State['selectedHouse'] => state.selectedHouse,
+  formData: (state: State): State['formData'] => state.formData,
 };
 
 export default getters;

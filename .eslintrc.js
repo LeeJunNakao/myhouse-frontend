@@ -12,6 +12,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'operator-linebreak': 'off',
     'object-curly-newline': 'off',
+    'arrow-body-style': 'off',
   },
   overrides: [
     {

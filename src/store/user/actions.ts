@@ -1,7 +1,7 @@
 import { Commit } from 'vuex';
-import { StateType } from './protocols';
+import { State } from './protocols';
 
-const actions = { setUserData({ commit }: { commit: Commit}, userData: StateType): void {
+const actions = { setUserData({ commit }: { commit: Commit}, userData: State): void {
   commit('setUserData', userData);
 } };
 
