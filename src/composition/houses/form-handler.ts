@@ -22,4 +22,8 @@ export class FormHandler extends StorageManager implements IFormHandler {
   getResponseMessage(): State['formData']['responseMessage'] {
     return this.store.getters['houses/formData'].responseMessage;
   }
+
+  getFormData(): State['formData'] {
+    return this.store.getters['houses/formData'];
+  }
 }

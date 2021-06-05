@@ -1,6 +1,6 @@
+import { State } from '@/store/purchases/protocols';
 import { FormHandler as IFormHandler } from '../protocols';
 import StorageManager from '../StorageManager';
-import { State } from '@/store/purchases/protocols';
 
 export class FormHandler extends StorageManager implements IFormHandler {
   handleBack?: () => void;
@@ -20,6 +20,10 @@ export class FormHandler extends StorageManager implements IFormHandler {
   }
 
   getResponseMessage(): State['formData']['responseMessage'] {
-    return this.store.getters['purchases/formData'].responseMessage;
+    return this.store.getters['purchases/getFormData'].responseMessage;
+  }
+
+  getFormData(): State['formData'] {
+    return this.store.getters['purchases/getFormData'];
   }
 }

@@ -6,6 +6,7 @@ const getters = {
     return housePurchases;
   },
   getSelectedPurchase: (state: State): State['selectedPurchase'] => state.selectedPurchase,
+  getFormData: (state: State): State['formData'] => state.formData,
 };
 
 export default getters;

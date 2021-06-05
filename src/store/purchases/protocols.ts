@@ -9,7 +9,7 @@ export interface State {
   purchases: HousePurchases[];
   selectedPurchase: Purchase | null;
   formData: {
-    date: Date | null;
+    date: string;
     description: string;
     value: number;
     responseMessage: {

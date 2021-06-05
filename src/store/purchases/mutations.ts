@@ -4,7 +4,7 @@ const mutations = {
   setPurchases(
     state: State,
     { houseId, purchases }: { houseId: HousePurchases['houseId']; purchases: Purchase[] },
-  ) {
+  ): void {
     const housePurchases = {
       houseId,
       purchases,
@@ -14,7 +14,7 @@ const mutations = {
   setSelectedPurchase(state: State, purchase: Purchase) {
     state.selectedPurchase = purchase;
   },
-  setFormDate(state: State, date: Date) {
+  setFormDate(state: State, date: string) {
     state.formData.date = date;
   },
   setFormDescription(state: State, description: string) {

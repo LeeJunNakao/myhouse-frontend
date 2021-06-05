@@ -4,8 +4,7 @@ import { Purchase, HousePurchases } from './protocols';
 const actions = {
   setPurchases(
     { commit }: { commit: Commit },
-    houseId: HousePurchases['houseId'],
-    purchases: Purchase[],
+    { houseId, purchases }: { houseId: HousePurchases['houseId']; purchases: Purchase[] },
   ): void {
     commit('setPurchases', { houseId, purchases });
   },

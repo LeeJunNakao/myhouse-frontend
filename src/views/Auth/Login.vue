@@ -49,11 +49,14 @@ import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
 import Loading from '@/components/Loading/Loading.vue';
 import Layout from './components/Layout.vue';
 
-export default { name: 'Home',
-  components: { Input,
+export default {
+  name: 'Home',
+  components: {
+    Input,
     Layout,
     ErrorMessage,
-    Loading },
+    Loading,
+  },
   setup(): { [key: string]: any } {
     const store = useStore();
     const auth = new Auth(store);
@@ -64,10 +67,10 @@ export default { name: 'Home',
 
     const formErrors = ref({ email: null, password: null, response: null });
     const attributes: { [index: string]: Attribute } = { email, password };
-    const formValidator = new FormValidator(attributes, formErrors, { email: { required: true,
-      type: 'email' },
-    password: { required: true,
-      type: 'password' } });
+    const formValidator = new FormValidator(attributes, formErrors, {
+      email: { required: true, type: 'email' },
+      password: { required: true, type: 'password' },
+    });
 
     const hasFormError = computed(() => {
       const errors = Object.values(formErrors.value);
@@ -80,8 +83,10 @@ export default { name: 'Home',
         isLoading.value = true;
         formValidator.validate();
         if (!hasFormError.value) {
-          const { token } = await authService.login({ email: email.value,
-            password: password.value });
+          const { token } = await authService.login({
+            email: email.value,
+            password: password.value,
+          });
           auth.login(token);
         }
       } catch (error) {
@@ -94,14 +99,9 @@ export default { name: 'Home',
 
     const setAttribute = (key: string, value: string) => setter(attributes, key, value);
 
-    return { email,
-      password,
-      setAttribute,
-      login,
-      formErrors,
-      isLoading,
-      translateError };
-  } };
+    return { email, password, setAttribute, login, formErrors, isLoading, translateError };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

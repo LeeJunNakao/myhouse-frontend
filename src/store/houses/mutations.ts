@@ -10,7 +10,6 @@ const mutations = {
   updateHouse(state: State, house: House) {
     const index = state.houses.findIndex((h) => Number(h.id) === Number(house.id));
     if (index > -1) state.houses.splice(index, 1, house);
-    console.log('update House', index);
   },
   deleteHouse(state: State, houseId: number) {
     const index = state.houses.findIndex((h) => Number(h.id) === Number(houseId));

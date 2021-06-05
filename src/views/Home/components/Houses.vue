@@ -13,12 +13,11 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref, watch, inject } from 'vue';
+import { onMounted, ref, watch, inject } from 'vue';
 import { Select } from '@/components/Inputs';
 import { Data, SetupContext } from '@/protocols/composition';
 import MessageBox from '@/components/MessageBox/MessageBox.vue';
 import { FormHandler } from '@/composition/houses';
-import { House } from '@/protocols/domain/House';
 import { getOptions, getSelectedItem, selectItem } from '@/composition/setups/items-list';
 
 export default {
