@@ -6,7 +6,7 @@ const state = (): State => ({
   formData: {
     date: '',
     description: '',
-    value: 0,
+    value: '',
     responseMessage: {
       type: '',
       message: '',

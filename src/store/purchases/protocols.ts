@@ -11,7 +11,7 @@ export interface State {
   formData: {
     date: string;
     description: string;
-    value: number;
+    value: string;
     responseMessage: {
       type: string;
       message: string;

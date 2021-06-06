@@ -14,13 +14,15 @@ import UserStore from '@/composition/user';
 import { Data } from '@/protocols/composition';
 import Loading from '@/components/Loading/Loading.vue';
 import * as authService from '@/services/auth';
-import { ServiceHandler } from '@/composition/houses';
+import { ServiceHandler as HouseServiceHandler } from '@/composition/houses';
+import { ServiceHandler as PurchasesServiceHandler } from '@/composition/purchases';
 
 export default {
   name: 'Home',
   setup(): Data {
     const store = useStore();
-    const serviceHandler = new ServiceHandler(store);
+    const houseServiceHandler = new HouseServiceHandler(store);
+    const purchasesServiceHandler = new PurchasesServiceHandler(store);
     const router = useRouter();
     const route = useRoute();
     const auth = new AuthStore(store);
@@ -67,8 +69,9 @@ export default {
 
     watch(accessToken, validateToken, { immediate: true });
 
-    onMounted(() => {
-      serviceHandler.getHouses();
+    onMounted(async () => {
+      await houseServiceHandler.getHouses();
+      await purchasesServiceHandler.getPurchases();
     });
 
     return { isAuthenticated, isLoading };

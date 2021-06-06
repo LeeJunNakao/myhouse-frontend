@@ -8,6 +8,12 @@ const actions = {
   ): void {
     commit('setPurchases', { houseId, purchases });
   },
+  insertPurchase(
+    { commit }: { commit: Commit },
+    { houseId, purchase }: { houseId: HousePurchases['houseId']; purchase: Purchase },
+  ): void {
+    commit('insertPurchase', { houseId, purchase });
+  },
   setSelectedPurchase({ commit }: { commit: Commit }, purchase: Purchase): void {
     commit('setSelectedPurchase', purchase);
   },

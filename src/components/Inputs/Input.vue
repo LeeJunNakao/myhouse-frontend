@@ -49,7 +49,7 @@ export default {
     const shouldValidate = ref(true);
 
     const setPreview = (value: string) => {
-      if (isNumericInput.value.date) {
+      if (isNumericInput.value?.date) {
         preview.value = getOnlyNumberString(value);
       } else {
         preview.value = value;
@@ -61,7 +61,7 @@ export default {
       if (isNumericInput.value) {
         acceptOnlyNumbers(input.value as HTMLInputElement, inputValue.value, event, regex.value);
       }
-      if (isNumericInput.value.date) {
+      if (isNumericInput.value?.date) {
         acceptDateFormat(input.value as HTMLInputElement, preview.value, event);
       }
     };

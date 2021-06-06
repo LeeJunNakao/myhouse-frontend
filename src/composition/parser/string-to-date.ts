@@ -5,7 +5,7 @@ interface DateString {
 }
 
 export const getDateElements = (word: string): DateString => {
-  const dateArray = word.split('');
+  const dateArray = word.split('').filter((c) => c !== '/');
   const day = dateArray.slice(0, 2).join('');
   const month = dateArray.slice(2, 4).join('');
   const year = dateArray.slice(4, 8).join('');

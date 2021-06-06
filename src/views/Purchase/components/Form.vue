@@ -47,14 +47,18 @@
 
 <script lang="ts">
 import { computed, inject, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { Input } from '@/components/Inputs';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import { Data } from '@/protocols/composition';
 import Button from '@/components/Button/Button.vue';
 import { getFormItem, action } from '@/composition/setups/items-list';
-import { FormHandler } from '@/composition/purchases/form-handlers';
+import { FormHandler, ServiceHandler } from '@/composition/purchases';
 import FormValidator from '@/composition/validators/form-validator';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
+import { PurchaseCreateDto } from '@/protocols/domain/Purchase';
+import { State } from '@/store/purchases/protocols';
+import { getDateElements } from '@/composition/parser';
 
 export default {
   name: 'Form',
@@ -65,7 +69,9 @@ export default {
     ErrorMessage,
   },
   setup(): Data {
+    const route = useRoute();
     const formHandler = inject<FormHandler | undefined>('formHandler');
+    const serviceHandler = inject<ServiceHandler>('serviceHandler');
     const date = getFormItem('date', formHandler);
     const description = getFormItem('description', formHandler);
     const value = getFormItem('value', formHandler);
@@ -79,15 +85,29 @@ export default {
       },
     });
     const hasErrors = computed(() => Object.values(errors.value).some((i) => i));
+    const houseId = computed(() => Number(route.params.id)).value;
 
     const setDate = (v: string) => action('purchases/setFormDate', v, formHandler);
     const setDescription = (v: string) => action('purchases/setFormDescription', v, formHandler);
     const setValue = (v: string) => action('purchases/setFormValue', v, formHandler);
 
-    const handleSubmit = () => {
+    const encodeData = (data: State['formData']): PurchaseCreateDto => {
+      const { day, month, year } = getDateElements(data.date);
+      const timestamp = new Date(Number(year), Number(month) - 1, Number(day)).getTime();
+      const valueInt = Math.round(Number(data.value.replace(',', '.')) * 100);
+      return {
+        date: timestamp,
+        description: data.description,
+        value: valueInt,
+      };
+    };
+    const handleSubmit = async () => {
       formValidator.validate();
-      if (!hasErrors.value) console.log('submit', formHandler?.getFormData());
-      else console.log('not submit');
+
+      if (!hasErrors.value) {
+        const encodedData = encodeData(formHandler?.getFormData() as State['formData']);
+        await serviceHandler?.createPurchase(houseId, encodedData);
+      } else console.log('not submit');
     };
 
     return {

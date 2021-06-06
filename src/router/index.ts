@@ -6,8 +6,8 @@ import Register from '@/views/Auth/Register.vue';
 import RecoverPassword from '@/views/Auth/RecoverPassword.vue';
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/purchase', name: 'Purchase', component: Purchase },
   { path: '/', name: 'Home', component: Home },
+  { path: '/house/:id/purchase', name: 'Purchase', component: Purchase },
   { path: '/login', name: 'Login', component: Login },
   { path: '/register', name: 'Register', component: Register },
   { path: '/recover-password', name: 'RecoverPassword', component: RecoverPassword },

@@ -57,7 +57,7 @@ export default {
       formHandler?.selectItem(null);
     };
     const handlePurchase = () => {
-      router.push({ name: 'Purchase' });
+      router.push({ name: 'Purchase', params: { id: house.value?.id as number } });
     };
     if (formHandler) formHandler.handleBack = handleBack;
 
