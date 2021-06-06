@@ -6,6 +6,7 @@
     footerPath="/register"
     footerText="registrar"
     :handleSubmit="login"
+    class="layout"
   >
     <Input
       data-test="email"
@@ -128,5 +129,9 @@ a {
 
 .input-wrapper {
   justify-content: center;
+}
+
+.layout::v-deep .input-wrapper + .input-wrapper {
+  margin-top: 1rem;
 }
 </style>

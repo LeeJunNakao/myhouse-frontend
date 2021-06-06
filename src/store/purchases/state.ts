@@ -5,7 +5,7 @@ const state = (): State => ({
   selectedPurchase: null,
   formData: {
     date: '',
-    description: 'dasdsa',
+    description: '',
     value: 0,
     responseMessage: {
       type: '',

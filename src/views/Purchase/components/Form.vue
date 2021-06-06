@@ -1,7 +1,14 @@
 <template>
   <Wrapper direction="column" full>
     <Wrapper full class="form-item">
-      <Input placeholder="Data da compra" :value="date || ''" :setValue="setDate" />
+      <Input
+        placeholder="Data da compra"
+        :value="date || ''"
+        :setValue="setDate"
+        :numericInput="{
+          date: true,
+        }"
+      />
     </Wrapper>
     <ErrorMessage :message="errors.date" />
     <Wrapper full class="form-item">
@@ -22,12 +29,16 @@
           :value="value || ''"
           :setValue="setValue"
           type="tel"
-          numericInput
-          :regex="/^\d+(\,\d{0,2})?$/"
-        />
+          :numericInput="{ regex: /^\d{1,6}(\,\d{0,2})?$/ }"
+          @keypress.enter="handleSubmit"
+        >
+          <template v-slot:prepend>
+            <label class="currency-symbol">R$</label>
+          </template>
+        </Input>
       </Wrapper>
       <Wrapper justify="center">
-        <Button text="Salvar" :handleClick="handleClick" />
+        <Button text="Salvar" :handleClick="handleSubmit" />
       </Wrapper>
     </Wrapper>
     <ErrorMessage :message="errors.value" />
@@ -36,7 +47,7 @@
 
 <script lang="ts">
 import { computed, inject, ref } from 'vue';
-import { Input, NumericInput } from '@/components/Inputs';
+import { Input } from '@/components/Inputs';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import { Data } from '@/protocols/composition';
 import Button from '@/components/Button/Button.vue';
@@ -52,7 +63,6 @@ export default {
     Wrapper,
     Button,
     ErrorMessage,
-    NumericInput,
   },
   setup(): Data {
     const formHandler = inject<FormHandler | undefined>('formHandler');
@@ -74,9 +84,9 @@ export default {
     const setDescription = (v: string) => action('purchases/setFormDescription', v, formHandler);
     const setValue = (v: string) => action('purchases/setFormValue', v, formHandler);
 
-    const handleClick = () => {
+    const handleSubmit = () => {
       formValidator.validate();
-      if (!hasErrors.value) console.log('submit');
+      if (!hasErrors.value) console.log('submit', formHandler?.getFormData());
       else console.log('not submit');
     };
 
@@ -87,7 +97,7 @@ export default {
       setDate,
       setDescription,
       setValue,
-      handleClick,
+      handleSubmit,
       errors,
     };
   },
@@ -98,5 +108,12 @@ export default {
 .form-item {
   margin-top: 1rem;
   flex-grow: 1;
+}
+
+.currency-symbol {
+  height: 1rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-end;
 }
 </style>
