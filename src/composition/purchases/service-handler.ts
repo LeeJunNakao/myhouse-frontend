@@ -5,16 +5,43 @@ import StorageManager from '../StorageManager';
 
 export class ServiceHandler extends StorageManager {
   async getPurchases(): Promise<void> {
-    const houses: House[] = this.store.getters['houses/getHouses'];
-    const housesIds = houses.map((i) => i.id);
-    await this.requestPurchase(housesIds[0], housesIds);
+    try {
+      const houses: House[] = this.store.getters['houses/getHouses'];
+      const housesIds = houses.map((i) => i.id);
+      if (housesIds.length) await this.requestPurchase(housesIds[0], housesIds);
+    } catch (error) {
+      this.store.dispatch('purchases/setFormResponseMessage', {
+        status: 'error',
+        message: 'Erro ao buscar compras.',
+      });
+    }
   }
 
-  async createPurchase(houseId: House['id'], data: PurchaseCreateDto): Promise<Purchase> {
-    const purchase = await service.createPurchase(houseId, data);
-    this.store.dispatch('purchases/insertPurchase', { houseId, purchase });
-    console.log('purchase', purchase);
-    return purchase;
+  async createPurchase(
+    houseId: House['id'],
+    data: PurchaseCreateDto,
+  ): Promise<Purchase | undefined> {
+    try {
+      const purchase = await service.createPurchase(houseId, data);
+      this.store.dispatch('purchases/insertPurchase', { houseId, purchase });
+      return purchase;
+    } catch (error) {
+      this.store.dispatch('purchases/setFormResponseMessage', {
+        status: 'error',
+        message: 'Erro ao inserir compra.',
+      });
+      return undefined;
+    }
+  }
+
+  async deletePurchase(houseId: number, purchaseId: number): Promise<boolean> {
+    try {
+      await service.deletePurchase(houseId, purchaseId);
+      this.store.dispatch('purchases/removePurchase', { houseId, purchaseId });
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   private async requestPurchase(houseId: House['id'], housesIds: Array<House['id']>) {

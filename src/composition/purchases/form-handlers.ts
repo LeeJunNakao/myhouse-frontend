@@ -1,4 +1,4 @@
-import { State } from '@/store/purchases/protocols';
+import { State, HousePurchases } from '@/store/purchases/protocols';
 import { FormHandler as IFormHandler } from '../protocols';
 import StorageManager from '../StorageManager';
 
@@ -15,8 +15,8 @@ export class FormHandler extends StorageManager implements IFormHandler {
     return this.store.getters['purchases/getSelectedPurchase'];
   }
 
-  getItems(houseId: number): State['purchases'] {
-    return this.store.getters['purchases/getPurchasesByHouse'](houseId);
+  getItems(houseId: number): HousePurchases['purchases'] {
+    return this.store.getters['purchases/getPurchasesByHouse'](houseId)[0]?.purchases || [];
   }
 
   getResponseMessage(): State['formData']['responseMessage'] {
@@ -25,5 +25,9 @@ export class FormHandler extends StorageManager implements IFormHandler {
 
   getFormData(): State['formData'] {
     return this.store.getters['purchases/getFormData'];
+  }
+
+  clearForm(): void {
+    this.store.dispatch('purchases/clearForm');
   }
 }

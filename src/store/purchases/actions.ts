@@ -1,5 +1,5 @@
 import { Commit } from 'vuex';
-import { Purchase, HousePurchases } from './protocols';
+import { Purchase, HousePurchases, State } from './protocols';
 
 const actions = {
   setPurchases(
@@ -25,6 +25,23 @@ const actions = {
   },
   setFormValue({ commit }: { commit: Commit }, value: number): void {
     commit('setFormValue', value);
+  },
+  setFormResponseMessage(
+    { commit }: { commit: Commit },
+    responseMessage: State['formData']['responseMessage'],
+  ): void {
+    commit('setFormResponseMessage', responseMessage);
+  },
+  clearForm({ commit }: { commit: Commit }): void {
+    commit('setFormDate', '');
+    commit('setFormDescription', '');
+    commit('setFormValue', '');
+  },
+  removePurchase(
+    { commit }: { commit: Commit },
+    { houseId, purchaseId }: { houseId: HousePurchases['houseId']; purchaseId: Purchase['id'] },
+  ): void {
+    commit('removePurchase', { houseId, purchaseId });
   },
 };
 

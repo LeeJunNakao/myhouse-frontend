@@ -2,14 +2,14 @@
   <Page>
     <Panel>
       <UserInfo />
+      <Form @setDelete="setDelete" />
       <Purchases />
-      <Form />
     </Panel>
   </Page>
 </template>
 
-<script>
-import { provide } from 'vue';
+<script lang="ts">
+import { provide, ref } from 'vue';
 import { useStore } from 'vuex';
 import Page from '@/components/Page/Page.vue';
 import Panel from '@/components/Panel/Panel.vue';
@@ -31,9 +31,17 @@ export default {
     const store = useStore();
     const formHandler = new FormHandler(store);
     const serviceHandler = new ServiceHandler(store);
+    const isDeleting = ref(false);
 
     provide('formHandler', formHandler);
     provide('serviceHandler', serviceHandler);
+    provide('isDeleting', isDeleting);
+
+    const setDelete = (value: boolean) => {
+      isDeleting.value = value;
+    };
+
+    return { setDelete };
   },
 };
 </script>

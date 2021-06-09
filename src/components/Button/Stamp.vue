@@ -3,7 +3,7 @@
     direction="column"
     align="center"
     class="stamp-wrapper text-not-select"
-    :class="{ disabled }"
+    :class="{ disabled, warning }"
   >
     <span :class="color" class="material-icons icon">
       {{ icon }}
@@ -17,7 +17,13 @@ import Wrapper from '@/components/Layout/Wrapper.vue';
 
 export default {
   name: 'Stamp',
-  props: { disabled: Boolean, icon: String, text: String, color: String },
+  props: {
+    disabled: Boolean,
+    warning: Boolean,
+    icon: String,
+    text: String,
+    color: String,
+  },
   components: { Wrapper },
 };
 </script>
@@ -69,6 +75,15 @@ export default {
   span,
   label {
     color: $dark-gray !important;
+  }
+}
+
+.warning {
+  background-color: $light-red;
+  border-color: $red;
+  span,
+  label {
+    color: white !important;
   }
 }
 </style>
