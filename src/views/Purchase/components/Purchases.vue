@@ -1,10 +1,11 @@
 <template>
   <PurchaseList v-if="items.length" :purchases="items" />
   <MessageBox v-else text="Não há nenhum registro de compra para esta casa" />
+  <MessageBox :text="responseMessage.message" :error="responseMessage.type === 'error'" />
 </template>
 
 <script lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { computed, inject, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Data } from '@/protocols/composition';
 import MessageBox from '@/components/MessageBox/MessageBox.vue';
@@ -43,7 +44,9 @@ export default {
         .map((p) => decode(p));
     });
 
-    return { items };
+    const responseMessage = computed(() => formHandler?.getResponseMessage());
+
+    return { items, responseMessage };
   },
 };
 </script>

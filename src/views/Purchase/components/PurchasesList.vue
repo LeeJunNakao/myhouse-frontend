@@ -34,7 +34,7 @@
     </Wrapper>
     <Wrapper full class="list-wrapper total-wrapper" justify="space-between">
       <Wrapper>Total</Wrapper>
-      <Wrapper>{{ total }}</Wrapper>
+      <Wrapper>{{ currencyFormater(total) }}</Wrapper>
     </Wrapper>
   </Wrapper>
 </template>
@@ -46,6 +46,7 @@ import { FormHandler } from '@/composition/purchases';
 import { Purchase } from '@/protocols/domain/Purchase';
 import { Data } from '@/protocols/composition';
 import { useRoute } from 'vue-router';
+import { currencyFormater } from '@/composition/formater';
 
 export default {
   name: 'PurchaseList',
@@ -73,10 +74,11 @@ export default {
     });
 
     return {
-      selectPurchase,
       selectedPurchase,
       isDeleting,
       total,
+      selectPurchase,
+      currencyFormater,
     };
   },
 };
@@ -118,7 +120,7 @@ export default {
 
   & > div:nth-child(3) {
     text-align: right;
-    padding-right: .5rem;
+    padding-right: 0.5rem;
   }
 }
 

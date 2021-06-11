@@ -47,7 +47,7 @@
         icon="delete"
         :text="purchaseToDelete ? 'Confirmar' : 'Deletar'"
         @click="handleDelete(selectedPurchase)"
-        :warning="purchaseToDelete"
+        :warning="Boolean(purchaseToDelete)"
       />
       <Stamp icon="cancel" text="Cancelar" @click="handleCancel" />
     </Wrapper>
@@ -135,7 +135,7 @@ export default {
           const response = await serviceHandler?.createPurchase(houseId, encodedData);
           if (response) formHandler?.clearForm();
         }
-      } else console.log('not submit');
+      }
     };
 
     watch(selectedPurchase, (purchase: Purchase | null) => {

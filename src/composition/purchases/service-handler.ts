@@ -9,6 +9,10 @@ export class ServiceHandler extends StorageManager {
       const houses: House[] = this.store.getters['houses/getHouses'];
       const housesIds = houses.map((i) => i.id);
       if (housesIds.length) await this.requestPurchase(housesIds[0], housesIds);
+      this.store.dispatch('purchases/setFormResponseMessage', {
+        status: 'success',
+        message: 'Compras carregadas com sucesso.',
+      });
     } catch (error) {
       this.store.dispatch('purchases/setFormResponseMessage', {
         status: 'error',
