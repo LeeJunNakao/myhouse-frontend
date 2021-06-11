@@ -1,5 +1,17 @@
 <template>
   <Wrapper full direction="column">
+    <Wrapper
+      grid
+      templateColumns="1fr 1fr 1fr"
+      align="center"
+      full
+      gapColumns="0.5rem"
+      class="filter-wrapper"
+    >
+      <Wrapper full class="period">Período</Wrapper>
+      <Wrapper full><Select placeholder="MÊS" :options="[1, 2]" ref="monthFilter"/></Wrapper>
+      <Wrapper full><Select placeholder="ANO" :options="[2020, 2021]" ref="yearFilter"/></Wrapper>
+    </Wrapper>
     <Wrapper class="list-wrapper" grid :class="{ 'deleting-wrapper': isDeleting }">
       <Wrapper
         full
@@ -40,18 +52,20 @@
 </template>
 
 <script lang="ts">
-import { inject, computed, nextTick } from 'vue';
+import { inject, computed, nextTick, ref, onMounted } from 'vue';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import { FormHandler } from '@/composition/purchases';
 import { Purchase } from '@/protocols/domain/Purchase';
 import { Data } from '@/protocols/composition';
 import { useRoute } from 'vue-router';
 import { currencyFormater } from '@/composition/formater';
+import { Select } from '@/components/Inputs';
 
 export default {
   name: 'PurchaseList',
   components: {
     Wrapper,
+    Select,
   },
   props: {
     purchases: Array,
@@ -73,18 +87,43 @@ export default {
       return purchases?.map((p) => p.value).reduce((acc, curr) => acc + curr) || 0;
     });
 
+    const monthFilter = ref(null);
+    const yearFilter = ref(null);
+
+    onMounted(() => {
+      if (monthFilter.value) {
+        (monthFilter.value as any).searchValue = new Date(Date.now()).getMonth() + 1;
+      }
+
+      if (yearFilter.value) {
+        (yearFilter.value as any).searchValue = new Date(Date.now()).getFullYear();
+      }
+    });
+
     return {
       selectedPurchase,
       isDeleting,
       total,
       selectPurchase,
       currencyFormater,
+      monthFilter,
+      yearFilter,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.filter-wrapper {
+  margin-top: 1rem;
+
+  .period {
+    color: $dark-blue;
+    align-items: center;
+    height: 100%;
+  }
+}
+
 .selected {
   background-color: $blue;
 }

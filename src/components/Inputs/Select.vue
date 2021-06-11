@@ -183,8 +183,10 @@ $options-padding: 0.5rem;
   border-radius: $border-radius;
   height: 2rem;
   width: 100%;
+  flex-wrap: wrap;
 
   input {
+    width: 100%;
     border: 0;
     height: 100%;
   }
