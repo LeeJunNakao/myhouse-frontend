@@ -3,6 +3,7 @@
     <Wrapper class="form-wrapper" justify="center" v-show="showForm">
       <Input
         placeholder="Nome da casa"
+        :class="{ deleting: isDeleting }"
         :value="name"
         :setValue="(n) => setName(n)"
         @keypress.enter="handleSubmit"
@@ -22,7 +23,7 @@
 
 <script lang="ts">
 import { useStore } from 'vuex';
-import { inject, computed } from 'vue';
+import { inject, computed, ref, watch } from 'vue';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import Input from '@/components/Inputs/Input.vue';
 import Button from '@/components/Button/Button.vue';
@@ -44,17 +45,23 @@ export default {
     const formHandler: FormHandler | undefined = inject('formHandler');
     const name = computed<string>(() => props.name);
     const isEditing: Ref<boolean> | undefined = inject('isEditing');
+    const isDeleting = ref<boolean>(false);
+
+    const selectedHouse = computed(() => formHandler?.getSelectedItem());
+    watch(selectedHouse, (house) => {
+      if (!house) isDeleting.value = false;
+    });
 
     const goBack = (): void => {
       if (formHandler?.handleBack) formHandler.handleBack();
     };
 
     const handleSubmit = async () => {
-      const selectedHouse = formHandler?.getSelectedItem();
+      const houseData = selectedHouse.value;
       const house =
-        isEditing?.value && selectedHouse
+        isEditing?.value && houseData
           ? await serviceHandler.updateHouse({
-            ...selectedHouse,
+            ...houseData,
             name: name.value,
           })
           : await serviceHandler.createHouse(name.value);
@@ -63,11 +70,14 @@ export default {
     };
 
     const handleDelete = async () => {
-      await serviceHandler.deleteHouse();
-      goBack();
+      if (isDeleting.value) {
+        await serviceHandler.deleteHouse();
+        goBack();
+      }
+      isDeleting.value = true;
     };
 
-    return { handleSubmit, isEditing, handleDelete };
+    return { handleSubmit, isEditing, handleDelete, isDeleting };
   },
 };
 </script>
@@ -103,9 +113,19 @@ export default {
 .icon {
   font-size: 1rem;
   color: $dark-blue;
+  margin-right: 0.5rem;
 
   &:active {
     color: $blue;
+  }
+}
+
+.deleting::v-deep {
+  .wrapper {
+    border-color: $red;
+  }
+  span {
+    color: $red;
   }
 }
 </style>

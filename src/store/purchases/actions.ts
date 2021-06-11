@@ -43,6 +43,12 @@ const actions = {
   ): void {
     commit('removePurchase', { houseId, purchaseId });
   },
+  updatePurchase(
+    { commit }: { commit: Commit },
+    { houseId, purchase }: { houseId: HousePurchases['houseId']; purchase: Purchase },
+  ): void {
+    commit('updatePurchase', { houseId, purchase });
+  },
 };
 
 export default actions;

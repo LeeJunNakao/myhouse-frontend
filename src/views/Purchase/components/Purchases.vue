@@ -25,8 +25,8 @@ export default {
     const formHandler = inject<FormHandler>('formHandler');
 
     const decode = (purchase: Purchase) => {
-      const date = dateToString(new Date(purchase.date));
-      const value = String(purchase.value).replace('.', ',');
+      const date = dateToString(new Date(Number(purchase.date)));
+      const value = String(Number(purchase.value).toFixed(2)).replace('.', ',');
 
       return {
         id: purchase.id,
@@ -38,7 +38,9 @@ export default {
 
     const items = computed(() => {
       const purchases = formHandler?.getItems(Number(houseId.value)) || [];
-      return purchases.map((p) => decode(p));
+      return purchases
+        .sort((a, b) => (Number(a.date) < Number(b.date) ? -1 : 1))
+        .map((p) => decode(p));
     });
 
     return { items };

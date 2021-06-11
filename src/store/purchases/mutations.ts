@@ -44,6 +44,18 @@ const mutations = {
   ): void {
     state.formData.responseMessage = responseMessage;
   },
+  updatePurchase(
+    state: State,
+    { houseId, purchase }: { houseId: HousePurchases['houseId']; purchase: Purchase },
+  ): void {
+    const housePurchases = state.purchases.find((h) => Number(h.houseId) === Number(houseId));
+    if (housePurchases) {
+      const purchaseIndex = housePurchases.purchases.findIndex(
+        (p) => Number(p.id) === Number(purchase.id),
+      );
+      housePurchases.purchases.splice(purchaseIndex, 1, purchase);
+    }
+  },
   removePurchase(
     state: State,
     { houseId, purchaseId }: { houseId: HousePurchases['houseId']; purchaseId: Purchase['id'] },

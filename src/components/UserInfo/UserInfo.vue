@@ -1,4 +1,4 @@
-<template>
+f<template>
   <div id="user-info-wrapper">
     <Wrapper full>
       <Wrapper id="icon-wrapper" @click="changeShowInfo(userIcon)">

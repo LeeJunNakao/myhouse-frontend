@@ -34,6 +34,20 @@ export class ServiceHandler extends StorageManager {
     }
   }
 
+  async editPurchase(houseId: House['id'], data: Purchase): Promise<boolean> {
+    try {
+      const purchase = await service.updatePurchase(houseId, data.id, data);
+      this.store.dispatch('purchases/updatePurchase', { houseId, purchase });
+      return true;
+    } catch (error) {
+      this.store.dispatch('purchases/setFormResponseMessage', {
+        status: 'error',
+        message: 'Erro ao atualizar compra.',
+      });
+      return false;
+    }
+  }
+
   async deletePurchase(houseId: number, purchaseId: number): Promise<boolean> {
     try {
       await service.deletePurchase(houseId, purchaseId);

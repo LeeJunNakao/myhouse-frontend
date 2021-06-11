@@ -29,7 +29,7 @@ export default {
   setup(props: Data, { emit }: SetupContext): Data {
     const formHandler: FormHandler | undefined = inject('formHandler');
     const options = getOptions(formHandler);
-    const selectedHouse = getSelectedItem();
+    const selectedHouse = getSelectedItem(formHandler);
     const selectInput = ref<any>(null);
 
     const handleSelect = (house: any) => {
@@ -42,6 +42,9 @@ export default {
         (house) => {
           if (selectInput.value) {
             selectInput.value.searchValue = house?.name || '';
+          }
+          if (!house) {
+            selectInput.value.searchValue = '';
           }
         },
         { immediate: true, deep: true },

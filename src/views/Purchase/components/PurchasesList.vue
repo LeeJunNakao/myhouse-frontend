@@ -1,34 +1,40 @@
 <template>
-  <Wrapper class="list-wrapper" grid :class="{ 'deleting-wrapper': isDeleting }">
-    <Wrapper
-      full
-      class="head"
-      grid
-      templateColumns="1fr 1fr 1fr"
-      :class="{ 'deleting-wrapper': isDeleting }"
-    >
-      <Wrapper justify="center">Data</Wrapper>
-      <Wrapper justify="center">Descrição</Wrapper>
-      <Wrapper justify="center">Valor</Wrapper>
+  <Wrapper full direction="column">
+    <Wrapper class="list-wrapper" grid :class="{ 'deleting-wrapper': isDeleting }">
+      <Wrapper
+        full
+        class="head"
+        grid
+        templateColumns="1fr 1fr 1fr"
+        :class="{ 'deleting-wrapper': isDeleting }"
+      >
+        <Wrapper justify="center">Data</Wrapper>
+        <Wrapper justify="center">Descrição</Wrapper>
+        <Wrapper justify="center">Valor</Wrapper>
+      </Wrapper>
+      <Wrapper
+        full
+        class="item"
+        :class="{
+          selected: selectedPurchase && purchase.id === selectedPurchase.id,
+          deleting: isDeleting && selectedPurchase && purchase.id === selectedPurchase.id,
+        }"
+        v-for="purchase in purchases"
+        :key="purchase.id"
+        :data-id="purchase.id"
+        @click="selectPurchase(purchase)"
+        templateColumns="1fr 1fr 1fr"
+        gapColumns=".5rem"
+        align="center"
+      >
+        <Wrapper full justify="center">{{ purchase.date }}</Wrapper>
+        <Wrapper full justify="center">{{ purchase.description }}</Wrapper>
+        <Wrapper full justify="start">{{ purchase.value }}</Wrapper>
+      </Wrapper>
     </Wrapper>
-    <Wrapper
-      full
-      class="item"
-      :class="{
-        selected: selectedPurchase && purchase.id === selectedPurchase.id,
-        deleting: isDeleting && selectedPurchase && purchase.id === selectedPurchase.id,
-      }"
-      v-for="purchase in purchases"
-      :key="purchase.id"
-      :data-id="purchase.id"
-      @click="selectPurchase(purchase)"
-      templateColumns="1fr 1fr 1fr"
-      gapColumns=".5rem"
-      align="center"
-    >
-      <Wrapper full justify="center">{{ purchase.date }}</Wrapper>
-      <Wrapper full justify="center">{{ purchase.description }}</Wrapper>
-      <Wrapper full justify="center">{{ purchase.value }}</Wrapper>
+    <Wrapper full class="list-wrapper total-wrapper" justify="space-between">
+      <Wrapper>Total</Wrapper>
+      <Wrapper>{{ total }}</Wrapper>
     </Wrapper>
   </Wrapper>
 </template>
@@ -39,6 +45,7 @@ import Wrapper from '@/components/Layout/Wrapper.vue';
 import { FormHandler } from '@/composition/purchases';
 import { Purchase } from '@/protocols/domain/Purchase';
 import { Data } from '@/protocols/composition';
+import { useRoute } from 'vue-router';
 
 export default {
   name: 'PurchaseList',
@@ -48,7 +55,8 @@ export default {
   props: {
     purchases: Array,
   },
-  setup(): Data {
+  setup(props: Data): Data {
+    const route = useRoute();
     const formHandler = inject<FormHandler>('formHandler');
     const selectedPurchase = computed<Purchase | null>(
       () => formHandler?.getSelectedItem() || null,
@@ -59,11 +67,16 @@ export default {
       formHandler?.selectItem(purchase);
     };
     const isDeleting = inject<boolean>('isDeleting');
+    const purchases = computed(() => formHandler?.getItems(Number(route.params.id))).value;
+    const total = computed<number>(() => {
+      return purchases?.map((p) => p.value).reduce((acc, curr) => acc + curr) || 0;
+    });
 
     return {
       selectPurchase,
       selectedPurchase,
       isDeleting,
+      total,
     };
   },
 };
@@ -102,6 +115,11 @@ export default {
     text-overflow: ellipsis;
     text-align: center;
   }
+
+  & > div:nth-child(3) {
+    text-align: right;
+    padding-right: .5rem;
+  }
 }
 
 .deleting {
@@ -112,5 +130,9 @@ export default {
 
 .deleting-wrapper {
   border-color: $red !important;
+}
+
+.total-wrapper {
+  padding: 0.5rem;
 }
 </style>

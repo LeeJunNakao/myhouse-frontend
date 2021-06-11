@@ -66,6 +66,10 @@ export default {
       }
     };
 
+    watch(inputValue, (newValue: string, oldValue: string) => {
+      if (!newValue && oldValue) preview.value = '';
+    });
+
     watch(preview, (p: string) => {
       if (isNumericInput.value?.date && shouldValidate.value) setInputValueFormatted(p, setValue);
       else setValue(p);

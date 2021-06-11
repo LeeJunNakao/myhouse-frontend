@@ -38,7 +38,7 @@
         </Input>
       </Wrapper>
       <Wrapper justify="center">
-        <Button text="Salvar" :handleClick="handleSubmit" />
+        <Button :text="selectedPurchase ? 'Editar' : 'Salvar'" :handleClick="handleSubmit" />
       </Wrapper>
     </Wrapper>
     <ErrorMessage :message="errors.value" />
@@ -64,7 +64,7 @@ import { Input } from '@/components/Inputs';
 import Wrapper from '@/components/Layout/Wrapper.vue';
 import { Data } from '@/protocols/composition';
 import Button from '@/components/Button/Button.vue';
-import { getFormItem, action } from '@/composition/setups/items-list';
+import { getFormItem, action, getSelectedItem } from '@/composition/setups/items-list';
 import { FormHandler, ServiceHandler } from '@/composition/purchases';
 import FormValidator from '@/composition/validators/form-validator';
 import ErrorMessage from '@/components/Layout/ErrorMessage.vue';
@@ -101,9 +101,7 @@ export default {
     });
     const hasErrors = computed(() => Object.values(errors.value).some((i) => i));
     const houseId = computed(() => Number(route.params.id)).value;
-    const selectedPurchase = computed<Purchase | null>(() => {
-      return (formHandler as FormHandler)?.getSelectedItem();
-    });
+    const selectedPurchase = getSelectedItem(formHandler);
     const purchaseToDelete = ref<Purchase | null>(null);
     watch(purchaseToDelete, (toDelete: Purchase | null) => {
       emit('setDelete', Boolean(toDelete));
@@ -128,8 +126,15 @@ export default {
 
       if (!hasErrors.value) {
         const encodedData = encodeData(formHandler?.getFormData() as State['formData']);
-        const response = await serviceHandler?.createPurchase(houseId, encodedData);
-        if (response) formHandler?.clearForm();
+        if (selectedPurchase.value) {
+          await serviceHandler?.editPurchase(houseId, {
+            ...encodedData,
+            id: selectedPurchase.value.id,
+          });
+        } else {
+          const response = await serviceHandler?.createPurchase(houseId, encodedData);
+          if (response) formHandler?.clearForm();
+        }
       } else console.log('not submit');
     };
 
