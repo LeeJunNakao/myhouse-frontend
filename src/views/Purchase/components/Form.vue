@@ -8,11 +8,17 @@
         :numericInput="{
           date: true,
         }"
+        data-test="date"
       />
     </Wrapper>
     <ErrorMessage :message="errors.date" />
     <Wrapper full class="form-item">
-      <Input placeholder="Descrição" :value="description || ''" :setValue="setDescription" />
+      <Input
+        placeholder="Descrição"
+        :value="description || ''"
+        :setValue="setDescription"
+        data-test="description"
+      />
     </Wrapper>
     <ErrorMessage :message="errors.description" />
     <Wrapper
@@ -31,6 +37,7 @@
           type="tel"
           :numericInput="{ regex: /^\d{1,6}(\,\d{0,2})?$/ }"
           @keypress.enter="handleSubmit"
+          data-test="value"
         >
           <template v-slot:prepend>
             <label class="currency-symbol">R$</label>
@@ -48,11 +55,12 @@
         :text="purchaseToDelete ? 'Confirmar' : 'Deletar'"
         @click="handleDelete(selectedPurchase)"
         :warning="Boolean(purchaseToDelete)"
+        data-test="stamp-delete"
       />
-      <Stamp icon="cancel" text="Cancelar" @click="handleCancel" />
+      <Stamp icon="cancel" text="Cancelar" @click="handleCancel" data-test="stamp-cancel" />
     </Wrapper>
     <Wrapper full justify="end" class="buttons-wrapper" v-else>
-      <Stamp icon="skip_previous" text="Voltar" @click="handleBack" />
+      <Stamp icon="skip_previous" text="Voltar" @click="handleBack" data-test="stamp-back" />
     </Wrapper>
   </Wrapper>
 </template>

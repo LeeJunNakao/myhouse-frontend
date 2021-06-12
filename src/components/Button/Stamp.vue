@@ -8,7 +8,7 @@
     <span :class="color" class="material-icons icon">
       {{ icon }}
     </span>
-    <label :class="color">{{ text }}</label>
+    <label :class="color" data-test="text">{{ text }}</label>
   </Wrapper>
 </template>
 

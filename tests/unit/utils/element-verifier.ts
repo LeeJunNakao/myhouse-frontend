@@ -27,6 +27,24 @@ interface Child {
   content: string;
 }
 
+/*
+  Elements is a array with the document object names contained at data-test tag that the user wants to check.
+  Children is a Array of { parentName: '', type: '' }, where parentName is one of elements informed 
+  and type is the name contained at data-test of document obect the user wants to check.
+  
+  Example:
+
+  ElementVerifier({ 
+    wrapper, 
+    elements: ['date', 'description'], 
+    children: [
+      { parentName: 'date', type: 'label' }, 
+      { parentName: 'description', type: 'input' }
+    ]
+  })
+
+*/
+
 class ElementVerifier {
   private wrapper: any;
 

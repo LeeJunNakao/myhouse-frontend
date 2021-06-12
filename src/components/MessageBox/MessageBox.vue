@@ -1,5 +1,5 @@
 <template>
-  <div class="message text-not-select" data-test="message" :class="{ error }">
+  <div data-test="message-box" class="message text-not-select" :class="{ error }">
     <label>{{ text }}</label>
   </div>
 </template>

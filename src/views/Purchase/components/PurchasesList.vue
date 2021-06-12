@@ -55,7 +55,7 @@
     </Wrapper>
     <Wrapper full class="list-wrapper total-wrapper" justify="space-between">
       <Wrapper>Total</Wrapper>
-      <Wrapper>{{ currencyFormater(total) }}</Wrapper>
+      <Wrapper data-class="purchases-total">{{ currencyFormater(total) }}</Wrapper>
     </Wrapper>
   </Wrapper>
 </template>
