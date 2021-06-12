@@ -9,10 +9,19 @@
       class="filter-wrapper"
     >
       <Wrapper full class="period">Período</Wrapper>
-      <Wrapper full><Select placeholder="MÊS" :options="[1, 2]" ref="monthFilter"/></Wrapper>
-      <Wrapper full><Select placeholder="ANO" :options="[2020, 2021]" ref="yearFilter"/></Wrapper>
+      <Wrapper full
+        ><Select
+          placeholder="MÊS"
+          :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+          ref="monthFilter"
+          block
+      /></Wrapper>
+      <Wrapper full
+        ><Select placeholder="ANO" :options="yearOptions" ref="yearFilter" block
+      /></Wrapper>
     </Wrapper>
-    <Wrapper class="list-wrapper" grid :class="{ 'deleting-wrapper': isDeleting }">
+    <MessageBox v-if="!filteredPurchases.length" text="Não há compras para esse período." />
+    <Wrapper class="list-wrapper" grid :class="{ 'deleting-wrapper': isDeleting }" v-else>
       <Wrapper
         full
         class="head"
@@ -31,7 +40,7 @@
           selected: selectedPurchase && purchase.id === selectedPurchase.id,
           deleting: isDeleting && selectedPurchase && purchase.id === selectedPurchase.id,
         }"
-        v-for="purchase in purchases"
+        v-for="purchase in filteredPurchases"
         :key="purchase.id"
         :data-id="purchase.id"
         @click="selectPurchase(purchase)"
@@ -59,13 +68,23 @@ import { Purchase } from '@/protocols/domain/Purchase';
 import { Data } from '@/protocols/composition';
 import { useRoute } from 'vue-router';
 import { currencyFormater } from '@/composition/formater';
+import { getDateElements, fromCurrencyToNumber } from '@/composition/parser';
 import { Select } from '@/components/Inputs';
+import MessageBox from '@/components/MessageBox/MessageBox.vue';
+
+interface ParsedPurchases {
+  id: number;
+  date: string;
+  value: string;
+  description: string;
+}
 
 export default {
   name: 'PurchaseList',
   components: {
     Wrapper,
     Select,
+    MessageBox,
   },
   props: {
     purchases: Array,
@@ -82,13 +101,55 @@ export default {
       formHandler?.selectItem(purchase);
     };
     const isDeleting = inject<boolean>('isDeleting');
-    const purchases = computed(() => formHandler?.getItems(Number(route.params.id))).value;
-    const total = computed<number>(() => {
-      return purchases?.map((p) => p.value).reduce((acc, curr) => acc + curr) || 0;
-    });
+
+    const purchases = computed(() => props.purchases);
 
     const monthFilter = ref(null);
     const yearFilter = ref(null);
+
+    const filters = computed(() => ({
+      month: (monthFilter.value as any)?.searchValue || '',
+      year: (yearFilter.value as any)?.searchValue,
+    }));
+
+    const filteredPurchases = computed(() => {
+      const { month, year } = filters.value;
+      if (month && year) {
+        const filteredIds =
+          purchases.value
+            ?.map((i: ParsedPurchases) => ({
+              ...i,
+              date: getDateElements(i.date),
+            }))
+            .filter((i: any) => {
+              return Number(i.date.month) === Number(month) && Number(i.date.year) === Number(year);
+            })
+            .map((i: any) => i.id) || [];
+        const filtered = purchases.value?.filter((p: any) => filteredIds.includes(p.id)) || [];
+        return filtered;
+      }
+      return [];
+    });
+
+    const total = computed(() => {
+      const filteredValues = filteredPurchases.value.map((p: ParsedPurchases) => {
+        return fromCurrencyToNumber(p.value);
+      });
+      if (filteredValues.length) {
+        return filteredValues.reduce((acc: number, curr: number) => acc + curr);
+      }
+      return 0;
+    });
+
+    const yearOptions = computed(() => {
+      const currentYear = new Date(Date.now()).getFullYear();
+      const initialYear = 2000;
+      const years = [...new Array(currentYear - initialYear).keys()].map(
+        (i) => i + initialYear + 1,
+      );
+      const options = [initialYear, ...years].reverse();
+      return options;
+    });
 
     onMounted(() => {
       if (monthFilter.value) {
@@ -104,10 +165,12 @@ export default {
       selectedPurchase,
       isDeleting,
       total,
-      selectPurchase,
-      currencyFormater,
       monthFilter,
       yearFilter,
+      yearOptions,
+      filteredPurchases,
+      selectPurchase,
+      currencyFormater,
     };
   },
 };
@@ -118,9 +181,15 @@ export default {
   margin-top: 1rem;
 
   .period {
-    color: $dark-blue;
     align-items: center;
     height: 100%;
+    border-radius: $border-radius;
+    background-color: $dark-blue;
+    color: white;
+    justify-content: center;
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+      'Open Sans', 'Helvetica Neue', sans-serif;
   }
 }
 
@@ -131,6 +200,8 @@ export default {
   border: $border-width solid $dark-blue;
   border-radius: $border-radius;
   margin-top: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .head {

@@ -8,7 +8,7 @@
         @input="shouldSearch = true"
         name="select-component"
         :placeholder="placeholder"
-        :disabled="disabled"
+        :disabled="disabled || block"
         :class="{ 'text-not-select': disabled }"
       />
       <span
@@ -74,6 +74,7 @@ export default {
   name: 'Select',
   props: {
     disabled: Boolean,
+    block: Boolean,
     placeholder: String,
     /* A plain string[] string or Option[] */
     options: Array,
@@ -189,6 +190,10 @@ $options-padding: 0.5rem;
     width: 100%;
     border: 0;
     height: 100%;
+
+    &:disabled {
+      background-color: white;
+    }
   }
 }
 
